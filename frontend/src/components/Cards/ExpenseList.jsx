@@ -1,0 +1,52 @@
+import React from 'react'
+import { LuDownload, LuTrash2 } from 'react-icons/lu';
+import TransactionInfoCard from '../Cards/TransactionInfoCard';
+import moment from 'moment';
+import DeleteAlert from '../Modals/Alerts/DeleteAlert';
+
+const ExpenseList = ({...props}) => {
+  return (
+    <div className="bg-white p-6 rounded-2xl shadow-md shadow-gray-100 border border-gray-200/50">
+      <div className="flex items-center justify-between">
+        <h5 className="text-lg">Expense Categories</h5>
+        <div className="flex space-x-2">
+          <button
+            className="flex items-center gap-2 text-sm bg-gray-200 hover:bg-gray-300 px-3 py-2 rounded-md"
+            onClick={props.onDownload}
+          >
+            <LuDownload className="text-sm" />
+          </button>
+
+          {/* <button
+            className="flex items-center gap-2 text-sm bg-red-400 hover:bg-red-500 px-3 py-2 rounded-md"
+            onClick={props.onDeleteAll}
+          >
+            <LuTrash2 className="text-sm" />
+          </button> */}
+
+          {/* <DeleteAlert
+            content="Are you sure you want to delete all your expenses?"
+            onDelete={props.onDeleteAll}
+            // onCancel={() => setOpenDeleteAlert({show:false, data:null})}
+          /> */}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+        {props.transactions?.map((expense) => (
+          <TransactionInfoCard
+            key={expense._id}
+            title={expense.category}
+            icon={expense.icon}
+            amount={expense.amount}
+            date={moment(expense.date).format("Do MM YYYY")}
+            type="expense"
+            onDelete={() => props.onDelete(expense._id)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default ExpenseList
