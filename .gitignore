@@ -1,0 +1,46 @@
+########################
+# ENV FILES (CRITICAL)
+########################
+.env
+.env.*
+frontend/.env
+backend/.env
+
+########################
+# NODE / PACKAGE
+########################
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+########################
+# BUILD OUTPUTS
+########################
+dist/
+build/
+frontend/dist/
+frontend/build/
+
+########################
+# VITE
+########################
+.vite/
+
+########################
+# OS FILES
+########################
+.DS_Store
+Thumbs.db
+
+########################
+# EDITORS
+########################
+.vscode/
+.idea/
+
+########################
+# LOGS
+########################
+logs/
+*.log
