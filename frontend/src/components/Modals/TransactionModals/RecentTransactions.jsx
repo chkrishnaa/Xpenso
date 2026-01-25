@@ -17,7 +17,9 @@ const RecentTransactions = ({transactions, onSeeMore}) => {
       </div>
 
       <div className="grid grid-cols-1 gap-4 mt-6">
-        {transactions?.slice(0, 5)?.map((transaction) => (
+        {transactions
+          ?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          .slice(0,5).map((transaction) => (
           <TransactionInfoCard
             key={transaction._id}
             title={

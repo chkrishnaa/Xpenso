@@ -114,7 +114,28 @@ const Expense = () => {
     }
   };
 
-  const handleDownloadExpenseDetails = async () => {};
+  const handleDownloadExpenseDetails = async () => {
+    try{
+      const response = await axiosInstance.get(API_PATHS.EXPENSE.EXPORT_EXPENSE, 
+        {responseType: "blob"}
+      );
+    
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'expense_details.xlsx');
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error(
+        "Error downloading expense details. Please try again.",
+        error
+      );
+      toast.error("Failed to download expense details. Please try again.");
+    }
+  };
 
   useEffect(() => {
     fetchExpenseDetails();
@@ -140,7 +161,13 @@ const Expense = () => {
                 data: id,
               });
             }}
-            onDeleteAll={deleteAllExpense}
+            onDeleteAll={() => {
+              setOpenDeleteAlert({
+                show: true,
+                data: null,
+                type: "all",
+              });
+            }}
             onDownload={handleDownloadExpenseDetails}
           />
         </div>
@@ -155,13 +182,30 @@ const Expense = () => {
 
         <Transaction
           isOpen={openDeleteAlert.show}
-          onClose={() => setOpenDeleteAlert({ show: false, data: null })}
-          title="Delete Income"
+          onClose={() =>
+            setOpenDeleteAlert({ show: false, data: null, type: null })
+          }
+          title={
+            openDeleteAlert.type === "all"
+              ? "Delete All Expenses"
+              : "Delete Expense"
+          }
         >
           <DeleteAlert
-            content="Are you sure you want to delete this expense?"
-            onDelete={() => deleteExpense(openDeleteAlert.data)}
-            // onCancel={() => setOpenDeleteAlert({show:false, data:null})}
+            content={
+              openDeleteAlert.type === "all"
+                ? "Are you sure you want to delete all your expenses? This action cannot be undone."
+                : "Are you sure you want to delete this expense?"
+            }
+            onDelete={() => {
+              if (openDeleteAlert.type === "all") {
+                deleteAllExpense();
+              } else {
+                deleteExpense(openDeleteAlert.data);
+              }
+
+              setOpenDeleteAlert({ show: false, data: null, type: null });
+            }}
           />
         </Transaction>
       </div>

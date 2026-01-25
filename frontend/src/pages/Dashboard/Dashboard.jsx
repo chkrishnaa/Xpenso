@@ -8,6 +8,7 @@ import InfoCard from '../../components/Cards/InfoCard';
 import { LuHandCoins, LuWalletMinimal } from 'react-icons/lu';
 import { IoMdCard } from 'react-icons/io';
 import { addThousandsSeperator } from '../../utils/helper';
+import CumulativeIncomeExpenseChart from '../../components/Charts/CumulativeIncomeExpenseChart';
 import RecentTransactions from '../../components/Modals/TransactionModals/RecentTransactions';
 import FinancialOverview from '../../components/Modals/Overview/FinancialOverview';
 import ExpenseTransactions from '../../components/Modals/TransactionModals/ExpenseTransactions';
@@ -56,21 +57,40 @@ const Dashboard = () => {
             icon={<IoMdCard />}
             label="Total Balance"
             value={addThousandsSeperator(dashboardData?.totalBalance)}
-            color="bg-primary"
+            color="bg-balance"
           />
 
           <InfoCard
             icon={<LuWalletMinimal />}
             label="Total Income"
             value={addThousandsSeperator(dashboardData?.totalIncome || 0)}
-            color="bg-green"
+            color="bg-income"
           />
 
           <InfoCard
             icon={<LuHandCoins />}
             label="Total Expense"
             value={addThousandsSeperator(dashboardData?.totalExpense || 0)}
-            color="bg-red"
+            color="bg-expense"
+          />
+        </div>
+
+        <div className='mt-5'>
+          <CumulativeIncomeExpenseChart
+            transactions={[
+              ...(dashboardData?.last30DaysIncomes?.transactions || []).map(
+                (t) => ({
+                  ...t,
+                  amount: t.amount, // positive
+                })
+              ),
+              ...(dashboardData?.last30DaysExpenses?.transactions || []).map(
+                (t) => ({
+                  ...t,
+                  amount: t.amount, // negative
+                })
+              ),
+            ]}
           />
         </div>
 
@@ -103,12 +123,6 @@ const Dashboard = () => {
           <Last30DaysIncomes
             data={dashboardData?.last30DaysIncomes?.transactions || []}
           />
-          {/* <RecentIncomeWithChart
-            data={
-              dashboardData?.last60DaysIncome?.transactions?.slice(0, 4) || []
-            }
-            totalIncome={dashboardData?.totalIncome || 0}
-          /> */}
         </div>
       </div>
     </DashboardLayout>

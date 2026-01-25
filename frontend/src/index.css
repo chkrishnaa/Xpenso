@@ -6,9 +6,9 @@
     --breakpoint-3xl: 1920px;
     --color-primary: #875cf5;
 
-     --color-primary: #3B82F6; /* 🔵 Total Balance */
-  --color-green: #16A34A;  /* 🟢 Income */
-  --color-red: #EF4444; /* 🔴 Expense */
+     --color-balance: #3B82F6; /* 🔵 Total Balance */
+  --color-income: #16A34A;  /* 🟢 Income */
+  --color-expense: #EF4444; /* 🔴 Expense */
 }
 
 @layer base {

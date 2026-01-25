@@ -17,7 +17,9 @@ const IncomeTransactions = ({transactions, onSeeMore}) => {
       </div>
 
       <div className="grid grid-cols-1 gap-4 mt-6">
-        {transactions?.slice(0, 5)?.map((income) => (
+        {transactions
+          ?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          .slice(0,5).map((income) => (
           <TransactionInfoCard
             key={income._id}
             title={income.source}

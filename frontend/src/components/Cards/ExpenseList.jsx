@@ -17,23 +17,20 @@ const ExpenseList = ({...props}) => {
             <LuDownload className="text-sm" />
           </button>
 
-          {/* <button
+          <button
             className="flex items-center gap-2 text-sm bg-red-400 hover:bg-red-500 px-3 py-2 rounded-md"
             onClick={props.onDeleteAll}
           >
             <LuTrash2 className="text-sm" />
-          </button> */}
+          </button>
 
-          {/* <DeleteAlert
-            content="Are you sure you want to delete all your expenses?"
-            onDelete={props.onDeleteAll}
-            // onCancel={() => setOpenDeleteAlert({show:false, data:null})}
-          /> */}
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-        {props.transactions?.map((expense) => (
+        {[...props.transactions]
+          ?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          .map((expense) => (
           <TransactionInfoCard
             key={expense._id}
             title={expense.category}

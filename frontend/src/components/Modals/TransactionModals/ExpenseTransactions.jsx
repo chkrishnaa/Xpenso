@@ -17,17 +17,20 @@ const ExpenseTransactions = ({transactions, onSeeMore}) => {
       </div>
 
       <div className="grid grid-cols-1 gap-4 mt-6">
-        {transactions?.slice(0, 5)?.map((expense) => (
-          <TransactionInfoCard
-            key={expense._id}
-            title={expense.category}
-            icon={expense.icon}
-            amount={expense.amount}
-            date={moment(expense.data).format("Do MM YYYY")}
-            type="expense"
-            hideDeleteBtn
-          />
-        ))}
+        {transactions
+          ?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          .slice(0, 5)
+          .map((expense) => (
+            <TransactionInfoCard
+              key={expense._id}
+              title={expense.category}
+              icon={expense.icon}
+              amount={expense.amount}
+              date={moment(expense.data).format("Do MM YYYY")}
+              type="expense"
+              hideDeleteBtn
+            />
+          ))}
       </div>
     </div>
   );

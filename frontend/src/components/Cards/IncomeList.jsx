@@ -26,7 +26,9 @@ const IncomeList = ({...props}) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-        {props.transactions?.map((income)=>(
+        {[...props.transactions]
+          ?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          .map((income) => (
             <TransactionInfoCard
               key={income._id}
               title={income.source}
@@ -34,9 +36,9 @@ const IncomeList = ({...props}) => {
               amount={income.amount}
               date={moment(income.date).format("Do MM YYYY")}
               type="income"
-              onDelete={()=>props.onDelete(income._id)}
+              onDelete={() => props.onDelete(income._id)}
             />
-        ))}
+          ))}
       </div>
     </div>
   );

@@ -1,13 +1,50 @@
-import React from 'react'
-import CustomPieChart from '../../Charts/CustomPieChart'
+import React, { useMemo } from "react";
+import CustomPieChart from "../../Charts/CustomPieChart";
 
-const FinancialOverview = ({totalBalance, totalIncome, totalExpense}) => {
+const FinancialOverview = ({ totalBalance, totalIncome, totalExpense }) => {
+  // Normalize values
+  const income = Math.abs(totalIncome);
+  const expense = Math.abs(totalExpense);
+  const balance = totalBalance;
 
-  const balanceData = [
-    {name: "Total Balance", amount: totalBalance},
-    {name: "Total Income", amount: totalIncome},
-    {name: "Total Expense", amount: totalExpense},
-  ]
+  // Console logs (as requested)
+
+  const { data, colors } = useMemo(() => {
+    // Case 1: income > expense (positive balance → blue)
+    if (balance > 0) {
+      return {
+        data: [
+          { name: "Income", amount: income },
+          { name: "Expense", amount: expense },
+          { name: "Balance", amount: balance },
+        ],
+        colors: ["#16A34A", "#EF4444", "#3B82F6"], // green, red, blue
+      };
+    }
+
+    // Case 2: income < expense (negative balance → violet)
+    if (balance < 0) {
+      return {
+        data: [
+          { name: "Income", amount: income },
+          { name: "Expense", amount: expense },
+          { name: "Loss", amount: Math.abs(balance) },
+        ],
+        colors: ["#16A34A", "#EF4444", "#8B5CF6"], // green, red, violet
+      };
+    }
+
+    // Case 3: income === expense (50% green / 50% red)
+
+    return {
+      data: [
+        { name: "Income", amount: income },
+        { name: "Expense", amount: expense },
+      ],
+      colors: ["#16A34A", "#EF4444"], // green, red
+    };
+  }, [income, expense, balance]);
+
   return (
     <div className="bg-white p-6 rounded-2xl shadow-md shadow-gray-100 border border-gray-200/50">
       <div className="flex items-center justify-between">
@@ -15,14 +52,14 @@ const FinancialOverview = ({totalBalance, totalIncome, totalExpense}) => {
       </div>
 
       <CustomPieChart
-        data={balanceData}
+        data={data}
+        colors={colors}
         label="Total Balance"
-        totalAmount={totalBalance}
-        colors={["#3B82F6", "#16A34A", "#EF4444"]}
+        totalAmount={balance}
         showTextAnchor
       />
     </div>
   );
-}
+};
 
-export default FinancialOverview
+export default FinancialOverview;

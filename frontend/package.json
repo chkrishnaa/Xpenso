@@ -12,6 +12,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
     "axios": "^1.13.2",
+    "cors": "^2.8.6",
     "emoji-picker-react": "^4.17.1",
     "framer-motion": "^12.23.26",
     "moment": "^2.30.1",

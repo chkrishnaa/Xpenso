@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  LuUtensils,
+  LuImage,
   LuTrendingUp,
   LuTrendingDown,
   LuTrash2,
@@ -9,8 +9,8 @@ import {
 const TransactionInfoCard = ({ ...props }) => {
   const getAmountStyles = () => {
     return props.type === "income"
-      ? "bg-green-200 text-green"
-      : "bg-red-200 text-red";
+      ? "bg-gradient-to-br from-green-200 to-green-300 text-income"
+      : "bg-gradient-to-br from-red-200 to-red-300 text-expense";
   };
 
   const value = Math.abs(Number(props.amount) || 0);
@@ -23,7 +23,7 @@ const TransactionInfoCard = ({ ...props }) => {
         {props.icon ? (
           <img src={props.icon} alt={props.title} className="w-6 h-6" />
         ) : (
-          <LuUtensils className="w-6 h-6" />
+          <LuImage className="w-6 h-6" />
         )}
       </div>
 

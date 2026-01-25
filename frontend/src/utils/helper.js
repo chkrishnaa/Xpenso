@@ -57,28 +57,51 @@ export const addThousandsSeperator = (num) => {
   : formattedIntegerPart;
 };
 
-export const prepareExpenseBarChartData = (data = []) => {
-  return data.map((item) => ({
-    name: item.category,
-    amount: Math.abs(Number(item.amount)),
-    date: item.date,
-  }));
+export const truncateLabel = (text, maxLength = 10) => {
+  if (!text) return "";
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength - 3) + "...";
 };
 
-export const prepareIncomeBarChartData = (data = []) => {
-  return data.map((item) => ({
-    name: item.source,
-    amount: Math.abs(Number(item.amount)),
-    date: item.date,
-  }));
+
+export const prepareExpenseBarChartData = (data = []) => {
+  return [...data]
+    .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)) // old → new
+    .map((item) => ({
+      name: `${item.category} ${new Date(item.createdAt).toLocaleTimeString()}`,
+      label: item.category, // 👈 pure category (used for X-axis display)
+      amount: Math.abs(Number(item.amount)),
+      date: item.createdAt,
+      createdAt: item.createdAt,
+    }));
 };
+
+
+
+export const prepareIncomeBarChartData = (data = []) => {
+  return [...data]
+    .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)) // old → new
+    .map((item) => ({
+      name: `${item.source} ${new Date(item.createdAt).toLocaleTimeString()}`,
+      label: item.source, // 👈 pure category (used for X-axis display)
+      amount: Math.abs(Number(item.amount)),
+      date: item.createdAt,
+      createdAt: item.createdAt,
+    }));
+};
+
+
+
 
 export const prepareIncomeBarChartVisualization = (data = []) => {
   if (!Array.isArray(data)) return [];
 
   const sortedData = [...data].sort(
-    (a, b) => new Date(a.date) - new Date(b.date)
+    (a, b) =>
+      new Date(a.date) - new Date(b.date) ||
+      new Date(a.createdAt) - new Date(b.createdAt)
   );
+
 
   return sortedData.map((item) => ({
     month: moment(item.date).format("Do MMM"),
@@ -91,8 +114,11 @@ export const prepareExpenseLineChartVisualization = (data = []) => {
   if (!Array.isArray(data)) return [];
 
   const sortedData = [...data].sort(
-    (a, b) => new Date(a.date) - new Date(b.date)
+    (a, b) =>
+      new Date(a.date) - new Date(b.date) ||
+      new Date(a.createdAt) - new Date(b.createdAt)
   );
+
 
   return sortedData.map((item) => ({
     month: moment(item.date).format("Do MMM"),

@@ -7,11 +7,14 @@ const Last30DaysExpenses = ({data}) => {
     const [charData, setCharData]=useState([]);
 
     useEffect(() => {
-        const result=prepareExpenseBarChartData(data);
-        setCharData(result);
+      console.log("Raw expense data:", data);
 
-        return ()=>{};
+      const result = prepareExpenseBarChartData(data);
+      console.log("Chart-ready expense data:", result);
+
+      setCharData(result);
     }, [data]);
+
 
   return (
     <div className="bg-white p-6 rounded-2xl shadow-md shadow-gray-100 border border-gray-200/50 col-span-1">

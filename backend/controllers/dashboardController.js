@@ -38,37 +38,42 @@ exports.getDashboardData = async (req, res) => {
             0
         );
 
+        const incomes = await Income.find({ userId })
+          .sort({ createdAt: -1 });
+
+        const expenses = await Expense.find({ userId })
+          .sort({ createdAt: -1 });
+
         const lastTransactions = [
-          ...(await Income.find({ userId }).sort({ date: -1 }).limit(5)).map(
-            (transaction) => ({
-              ...transaction.toObject(),
-              type: "income", // lowercase, frontend-safe
-            })
-          ),
-          ...(await Expense.find({ userId }).sort({ date: -1 }).limit(5)).map(
-            (transaction) => ({
-              ...transaction.toObject(),
-              type: "expense", // lowercase, frontend-safe
-            })
-          ),
-        ].sort((a, b) => new Date(b.date) - new Date(a.date));
+          ...incomes.map((t) => ({ ...t.toObject(), type: "income" })),
+          ...expenses.map((t) => ({ ...t.toObject(), type: "expense" })),
+        ]
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          .slice(0, 5);
+
+
+
+        const income = totalIncome[0]?.total || 0; // +ve
+        const expense = totalExpense[0]?.total || 0; // -ve
+
+        
 
         res.status(200).json({
-            success: true,
-            totalBalance:
-            (totalIncome[0]?.total || 0) + (totalExpense[0]?.total || 0),
-            totalIncome: totalIncome[0]?.total || 0,
-            totalExpense: totalExpense[0]?.total || 0,
+          success: true,
 
-            last30DaysExpenses: {
-                total: expensesLast30Days,
-                transactions: last30DaysExpenseTransactions,
-            },
-            last30DaysIncomes: {
-                total: incomesLast30Days,
-                transactions: last30DaysImcomeTransactions,
-            },
-            recentTransactions: lastTransactions,
+          totalIncome: income,
+          totalExpense: expense,
+          totalBalance: income + expense, // ✅ CORRECT
+
+          last30DaysExpenses: {
+            total: expensesLast30Days,
+            transactions: last30DaysExpenseTransactions,
+          },
+          last30DaysIncomes: {
+            total: incomesLast30Days,
+            transactions: last30DaysImcomeTransactions,
+          },
+          recentTransactions: lastTransactions,
         });
 
 

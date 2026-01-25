@@ -9,8 +9,17 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
+import { truncateLabel } from "../../utils/helper";
 
-const CustomBarChart = ({ data = [], type = "expense", xKey}) => {
+const CustomBarChart = ({ data = [], type = "expense", xKey }) => {
+  console.table(
+    data.map((d) => ({
+      name: d.name,
+      amount: d.amount,
+      createdAt: d.createdAt,
+    }))
+  );
+
   // Axis + grid colors based on type
   const axisColor = type === "expense" ? "#EF4444" : "#16A34A";
   const gridColor =
@@ -23,6 +32,8 @@ const CustomBarChart = ({ data = [], type = "expense", xKey}) => {
     }
     return index % 2 === 0 ? "#16A34A" : "#4ADE80";
   };
+
+  const maxAmount = Math.max(...data.map((d) => d.amount || 0), 1);
 
   // Tooltip
   const CustomTooltip = ({ active, payload }) => {
@@ -72,14 +83,18 @@ const CustomBarChart = ({ data = [], type = "expense", xKey}) => {
         {/* X AXIS */}
         <XAxis
           dataKey={xKey}
+          angle={-65}
+          tickMargin={15} // 👈 moves labels down only
+          dy={8}
+          height={60}
           stroke={axisColor}
-          tick={{ fill: axisColor, fontSize: 12 }}
-          tickLine={{ stroke: axisColor }}
-          axisLine={{ stroke: axisColor }}
+          tick={{ fill: axisColor, fontSize: 11 }}
+          tickFormatter={(value) => truncateLabel(value.split(" ")[0], 10)}
         />
 
         {/* Y AXIS */}
         <YAxis
+          allowDecimals={false}
           stroke={axisColor}
           tick={{ fill: axisColor, fontSize: 12 }}
           tickLine={{ stroke: axisColor }}
