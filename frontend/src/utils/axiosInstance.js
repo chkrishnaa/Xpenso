@@ -3,7 +3,7 @@ import { BASE_URL } from "./apiPaths";
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
-  timeout: 10000,
+  timeout: 20000,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -24,12 +24,22 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const path = window.location.pathname;
+
+    if (
+      error.response?.status === 401 &&
+      !path.includes("/login") &&
+      !path.includes("/verify") &&
+      !path.includes("/reset") &&
+      !path.includes("/oauth-success") // ✅ ADD THIS
+    ) {
       localStorage.removeItem("token");
-      window.location.href = "/login";
+      window.location.replace("/login");
     }
+
     return Promise.reject(error);
   }
 );
+
 
 export default axiosInstance;

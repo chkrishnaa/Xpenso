@@ -12,13 +12,6 @@ import {
 import { truncateLabel } from "../../utils/helper";
 
 const CustomBarChart = ({ data = [], type = "expense", xKey }) => {
-  console.table(
-    data.map((d) => ({
-      name: d.name,
-      amount: d.amount,
-      createdAt: d.createdAt,
-    }))
-  );
 
   // Axis + grid colors based on type
   const axisColor = type === "expense" ? "#EF4444" : "#16A34A";

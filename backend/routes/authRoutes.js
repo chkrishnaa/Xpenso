@@ -1,34 +1,89 @@
-const express = require('express')
-const { protect } = require('../middleware/authMiddleware');
-const upload = require('../middleware/uploadMiddleware');
+const express = require("express");
+const { protect } = require("../middleware/authMiddleware");
+const upload = require("../middleware/uploadMiddleware");
+const passport = require("passport");
 
 const {
-    registerUser,
-    loginUser,
-    // forgotPassword,
-    // resetPassword,
-    getUserDetails,
-    // updatePassword,
-} = require('../controllers/authController');
+  registerUser,
+  loginUser,
+  getUserDetails,
+
+  // 🔐 Email verification
+  sendVerifyOtp,
+  verifyEmail,
+
+  // 🔑 Password reset
+  sendPasswordResetOtp,
+  resetPassword,
+
+  // ✅ Auth check
+  isAuthenticated,
+} = require("../controllers/authController");
 
 const authRoutes = express.Router();
 
-authRoutes.post('/register', registerUser);
-authRoutes.post('/login', loginUser);
-// authRouter.post('/password/forgot', forgotPassword);
-// authRouter.put('/password/reset/:token', resetPassword);
-authRoutes.get('/get-user',protect, getUserDetails);
+/* =========================
+   AUTH (MANUAL)
+========================= */
+authRoutes.post("/register", registerUser);
+authRoutes.post("/login", loginUser);
 
+/* =========================
+   USER
+========================= */
+authRoutes.get("/get-user", protect, getUserDetails);
+authRoutes.get("/is-auth", protect, isAuthenticated);
+
+/* =========================
+   EMAIL VERIFICATION
+========================= */
+authRoutes.post("/send-verify-otp", protect, sendVerifyOtp);
+authRoutes.post("/verify-email", protect, verifyEmail);
+
+/* =========================
+   PASSWORD RESET
+========================= */
+authRoutes.post("/send-reset-otp", sendPasswordResetOtp);
+authRoutes.post("/reset-password", resetPassword);
+
+/* =========================
+   GOOGLE AUTH
+========================= */
+// START GOOGLE LOGIN
+authRoutes.get(
+  "/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  })
+);
+
+// GOOGLE CALLBACK
+authRoutes.get(
+  "/google/callback",
+  passport.authenticate("google", { session: false }),
+  (req, res) => {
+    const { token } = req.user;
+
+    // res.redirect(`${process.env.CLIENT_URL}/oauth-success?token=${token}`);
+    res.redirect(`http://localhost:5173/oauth-success?token=${token}`);
+  }
+);
+
+/* =========================
+   PROFILE IMAGE UPLOAD
+========================= */
 authRoutes.post(
   "/upload-avatar",
   protect,
   upload.single("image"),
   async (req, res) => {
     if (!req.file) {
-      return res.status(400).json({ message: "No file uploaded" });
+      return res.status(400).json({
+        success: false,
+        message: "No file uploaded",
+      });
     }
 
-    // ✅ SAVE TO CORRECT SCHEMA FIELD
     req.user.profileImageUrl = req.file.path;
     await req.user.save();
 
@@ -38,9 +93,5 @@ authRoutes.post(
     });
   }
 );
-
-
-
-// authRouter.put('/password/update', updatePassword);
 
 module.exports = authRoutes;

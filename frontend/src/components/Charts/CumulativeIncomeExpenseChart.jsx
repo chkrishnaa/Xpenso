@@ -184,7 +184,7 @@ const CumulativeIncomeExpenseChart = ({ transactions }) => {
         )}
         {mode === "aggregated-blocks" && (
           /* ===== AGGREGATED CHART ===== */
-          <BarChart data={aggregatedDataBlocks}>
+          <BarChart data={aggregatedDataBlocks} barGap={0}>
             <CartesianGrid vertical={false} />
             <XAxis dataKey="date" />
             <YAxis />
@@ -205,7 +205,7 @@ const CumulativeIncomeExpenseChart = ({ transactions }) => {
         )}
         {mode === "aggregate-total" && (
           /* ===== AGGREGATED CHART ===== */
-          <BarChart data={aggregatedData}>
+          <BarChart data={aggregatedData} barGap={0}>
             <CartesianGrid vertical={false} />
             <XAxis dataKey="label" />
             <YAxis />

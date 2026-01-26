@@ -11,7 +11,7 @@ import { useTheme } from "../../context/ThemeContext";
 import { LuCircleAlert } from "react-icons/lu";
 
 const Login = () => {
-  const darkMode = useTheme();
+  const {darkMode} = useTheme();
   const navigate = useNavigate();
   const { updateUser } = useContext(UserContext);
 
@@ -72,11 +72,9 @@ const Login = () => {
 
       const { token, user } = data;
 
-      if (token) {
-        localStorage.setItem("token", token);
-        updateUser(user);
-        navigate("/dashboard");
-      }
+      localStorage.setItem("token", token);
+      updateUser(user);
+      navigate("/dashboard");
     } catch (error) {
       setFormState({
         loading: false,
@@ -88,6 +86,15 @@ const Login = () => {
       });
     }
   };
+
+  const handleGoogleLogin = () => {
+    window.location.href = 
+    // import.meta.env.VITE_GOOGLE_AUTH_URL;
+    "http://localhost:5000/api/v1/auth/google";
+  };
+
+
+
 
 
   return (
@@ -165,9 +172,10 @@ const Login = () => {
           {/* Google Login */}
           <button
             type="button"
+            onClick={handleGoogleLogin}
             className="w-full flex items-center justify-center gap-2
-             border border-purple-300 text-purple-300
-             py-3 rounded-lg hover:bg-purple-50 transition"
+  border border-purple-300 text-purple-300
+  py-3 rounded-lg hover:bg-purple-50 transition"
           >
             <FaGoogle />
             Sign in with Google

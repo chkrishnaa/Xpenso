@@ -18,8 +18,8 @@ export const useUserAuth = () => {
         try{
             const response = await axiosInstance.get(API_PATHS.AUTH.GET_USER_DETAILS);
 
-            if(isMounted && response.data){
-                updateUser(response.data);
+            if(isMounted && response.data && response.data.success){
+                updateUser(response.data.user);
             }
         } catch(error){
             console.log("Failed to fetch user details", error);
@@ -36,5 +36,5 @@ export const useUserAuth = () => {
      return () => {
         isMounted = false;        
      }
-   }, [updateUser, clearUser, navigate]);
+   }, [user, updateUser, clearUser, navigate]);
 };

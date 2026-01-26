@@ -26,48 +26,31 @@ const SignUp = () => {
     errors: {},
   });
 
-  // 🔹 Handle input change + clear field errors
+  // 🔹 Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
     setFormState((prev) => ({
       ...prev,
-      errors: {
-        ...prev.errors,
-        [name]: "",
-        submit: "",
-      },
+      errors: { ...prev.errors, [name]: "", submit: "" },
     }));
   };
 
-  // 🔹 Submit
+  // 🔹 Manual Signup
   const handleSignup = async (e) => {
     e.preventDefault();
 
     const errors = {};
 
-    if (!formData.name.trim()) {
-      errors.name = "Full name is required.";
-    }
-
-    if (!validateEmail(formData.email)) {
+    if (!formData.name.trim()) errors.name = "Full name is required.";
+    if (!validateEmail(formData.email))
       errors.email = "Enter a valid email address.";
-    }
-
-    if (!formData.password.trim()) {
-      errors.password = "Password is required.";
-    } else if (formData.password.length < 6) {
+    if (!formData.password || formData.password.length < 6)
       errors.password = "Password must be at least 6 characters.";
-    }
-
-    if (formData.confirmPassword !== formData.password) {
+    if (formData.password !== formData.confirmPassword)
       errors.confirmPassword = "Passwords do not match.";
-    }
 
     if (Object.keys(errors).length > 0) {
       return setFormState({ loading: false, errors });
@@ -76,7 +59,7 @@ const SignUp = () => {
     setFormState({ loading: true, errors: {} });
 
     try {
-      // 1️⃣ REGISTER USER
+      // 1️⃣ Register user
       const { data } = await axiosInstance.post(API_PATHS.AUTH.SIGNUP, {
         fullName: formData.name,
         email: formData.email,
@@ -85,22 +68,20 @@ const SignUp = () => {
 
       const { token, user } = data;
 
-      // 2️⃣ SAVE TOKEN FIRST
+      // 2️⃣ Save token
       localStorage.setItem("token", token);
 
-      // 3️⃣ UPLOAD PROFILE IMAGE (OPTIONAL)
+      // 3️⃣ Upload avatar (optional)
       if (formData.image) {
         const imageData = new FormData();
         imageData.append("image", formData.image);
 
         await axiosInstance.post(API_PATHS.IMAGE.UPLOAD_AVATAR, imageData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+          headers: { "Content-Type": "multipart/form-data" },
         });
       }
 
-      // 4️⃣ UPDATE CONTEXT & REDIRECT
+      // 4️⃣ Update context & redirect
       updateUser(user);
       navigate("/dashboard");
     } catch (error) {
@@ -114,46 +95,53 @@ const SignUp = () => {
     }
   };
 
+  // 🔹 Google Signup (SAME FLOW AS LOGIN)
+  const handleGoogleSignup = () => {
+    window.location.href = "http://localhost:5000/api/v1/auth/google";
+    // production example:
+    // window.location.href = "https://xpenso-7l2b.onrender.com/api/v1/auth/google";
+  };
 
   return (
     <AuthLayout side="right">
       <div className="w-full max-w-md">
         {/* Heading */}
-        <div className="flex justify-between">
-          <div className="mb-8">
+        <div className="flex justify-between mb-8">
+          <div>
             <h2 className="text-2xl font-bold text-gray-900">
               Create an account
             </h2>
-            <p className="text-gray-300">Join JobiFy to manage your finances</p>
+            <p className="text-gray-300">Join Xpenso to manage your finances</p>
           </div>
 
-          <ProfilePhoto image={formData.image} setImage={setFormData} />
+          <ProfilePhoto
+            image={formData.image}
+            setImage={(file) =>
+              setFormData((prev) => ({ ...prev, image: file }))
+            }
+          />
         </div>
 
         {/* Form */}
         <form className="space-y-4" onSubmit={handleSignup}>
           <Input
             label="Full Name"
-            type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
             icon={FaUser}
             placeholder="Enter your full name"
             error={formState.errors.name}
-            required
           />
 
           <Input
             label="Email Address"
-            type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
             icon={FaEnvelope}
             placeholder="Enter your email"
             error={formState.errors.email}
-            required
           />
 
           <div className="grid sm:grid-cols-2 gap-4">
@@ -164,9 +152,8 @@ const SignUp = () => {
               value={formData.password}
               onChange={handleChange}
               icon={FaLock}
-              placeholder="Create a password"
+              placeholder="Create password"
               error={formState.errors.password}
-              required
             />
 
             <Input
@@ -176,24 +163,21 @@ const SignUp = () => {
               value={formData.confirmPassword}
               onChange={handleChange}
               icon={FaLock}
-              placeholder="Re-enter your password"
+              placeholder="Confirm password"
               error={formState.errors.confirmPassword}
-              required
             />
           </div>
 
-          {/* Submit error */}
           {formState.errors.submit && (
             <p className="text-red-500 text-sm text-center">
               {formState.errors.submit}
             </p>
           )}
 
-          {/* Submit */}
           <button
             type="submit"
             disabled={formState.loading}
-            className="w-full bg-purple-300 text-white py-3 rounded-lg font-medium hover:bg-purple-700 transition disabled:opacity-70"
+            className="w-full bg-purple-300 text-white py-3 rounded-lg font-medium hover:bg-purple-700 transition"
           >
             {formState.loading ? "Creating account..." : "SIGN UP"}
           </button>
@@ -208,6 +192,7 @@ const SignUp = () => {
           {/* Google Signup */}
           <button
             type="button"
+            onClick={handleGoogleSignup}
             className="w-full flex items-center justify-center gap-2
               border border-purple-300 text-purple-300
               py-3 rounded-lg hover:bg-purple-50 transition"
@@ -216,7 +201,6 @@ const SignUp = () => {
             Sign up with Google
           </button>
 
-          {/* Bottom link */}
           <p className="text-center text-sm text-gray-300">
             Already have an account?{" "}
             <Link to="/login" className="text-purple-300 hover:underline">
