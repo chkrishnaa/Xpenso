@@ -97,9 +97,10 @@ const SignUp = () => {
 
   // 🔹 Google Signup (SAME FLOW AS LOGIN)
   const handleGoogleSignup = () => {
-    window.location.href = "http://localhost:5000/api/v1/auth/google";
-    // production example:
-    // window.location.href = "https://xpenso-7l2b.onrender.com/api/v1/auth/google";
+    window.location.href = `${import.meta.env.VITE_BACKEND_URL}${
+      API_PATHS.AUTH.GOOGLE_AUTH_URL
+    }`;
+    
   };
 
   return (

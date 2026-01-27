@@ -220,13 +220,15 @@ exports.isAuthenticated = async (req, res) => {
   }
 };
 
+
 exports.sendPasswordResetOtp = async (req, res) => {
   const { email } = req.body;
 
   if (!email) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Email is required" });
+    return res.status(400).json({
+      success: false,
+      message: "Email is required",
+    });
   }
 
   try {
@@ -235,11 +237,13 @@ exports.sendPasswordResetOtp = async (req, res) => {
     );
 
     if (!user) {
-      return res
-        .status(400)
-        .json({ success: false, message: "User not found" });
+      return res.status(400).json({
+        success: false,
+        message: "User not found",
+      });
     }
 
+    // reset old OTP
     user.resetOtp = "";
     user.resetOtpExpireAt = 0;
 
@@ -250,7 +254,7 @@ exports.sendPasswordResetOtp = async (req, res) => {
 
     await user.save();
 
-    // 📌 EMAIL DISABLED — LOG OTP
+    // TEMP: log OTP
     console.log("RESET PASSWORD OTP:", otp);
     console.log("OTP expires in 3 minutes");
 
@@ -259,18 +263,22 @@ exports.sendPasswordResetOtp = async (req, res) => {
       message: "Password reset OTP generated (check console)",
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    console.error("SEND RESET OTP ERROR:", error);
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
-
 
 exports.resetPassword = async (req, res) => {
   const { email, otp, newPassword } = req.body;
 
   if (!email || !otp || !newPassword) {
-    return res
-      .status(400)
-      .json({ success: false, message: "All fields are required" });
+    return res.status(400).json({
+      success: false,
+      message: "All fields are required",
+    });
   }
 
   try {
@@ -279,9 +287,10 @@ exports.resetPassword = async (req, res) => {
     );
 
     if (!user) {
-      return res
-        .status(400)
-        .json({ success: false, message: "User not found" });
+      return res.status(400).json({
+        success: false,
+        message: "User not found",
+      });
     }
 
     if (!user.resetOtp || user.resetOtp !== otp) {
@@ -298,7 +307,7 @@ exports.resetPassword = async (req, res) => {
       });
     }
 
-    user.password = newPassword; // 🔐 will hash via pre-save hook
+    user.password = newPassword; // hashed by pre-save hook
     user.resetOtp = "";
     user.resetOtpExpireAt = 0;
 
@@ -309,9 +318,14 @@ exports.resetPassword = async (req, res) => {
       message: "Password reset successful",
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    console.error("RESET PASSWORD ERROR:", error);
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
+
 
 exports.getUserDetails = async (req, res) => {
     try{

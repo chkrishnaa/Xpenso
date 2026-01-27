@@ -1,13 +1,16 @@
 export const BASE_URL =
-  // import.meta.env.VITE_BACKEND_URL || 
-  "http://localhost:5000";
+  import.meta.env.VITE_BACKEND_URL
 
 export const API_PATHS = {
   AUTH: {
     LOGIN: "/api/v1/auth/login",
     SIGNUP: "/api/v1/auth/register",
     GET_USER_DETAILS: "/api/v1/auth/get-user",
-    // RESET_PASSWORD: '/api/v1/auth/reset-password'
+    SEND_VERIFY_OTP: "/api/v1/auth/send-verify-otp",
+    VERIFY_EMAIL: "/api/v1/auth/verify-email",
+    SEND_RESET_OTP: '/api/v1/auth/send-reset-otp',
+    RESET_PASSWORD: '/api/v1/auth/reset-password',
+    GOOGLE_AUTH_URL: "/api/v1/auth/google",
   },
   DASHBOARD: {
     GET_DATA: "/api/v1/dashboard",

@@ -5,6 +5,7 @@ import Login from "./pages/Auth/Login.jsx";
 import SignUp from "./pages/Auth/SignUp.jsx";
 import Logout from "./pages/Auth/Logout.jsx";
 import ResetPassword from "./pages/Auth/ResetPassword.jsx";
+import VerifyEmail from "./pages/Auth/VerifyEmail.jsx";
 import OAuthSuccess from "./pages/Auth/OAuthSuccess.jsx";
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
 import Income from "./pages/Dashboard/Income.jsx";
@@ -25,7 +26,7 @@ function App() {
             <Route path="/logout" element={<Logout />} />
 
             <Route path="/reset-password" element={<ResetPassword />} />
-
+<Route path="/verify-email" element={<VerifyEmail />} />
             {/* ✅ GOOGLE OAUTH CALLBACK */}
             <Route path="/oauth-success" element={<OAuthSuccess />} />
 

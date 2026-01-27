@@ -8,11 +8,8 @@ const IncomeOverview = ({transactions, onAddIncomeData}) => {
     const [chartData, setChartData] = useState([]);
 
     useEffect(() => {
-      console.log("IncomeOverview → raw transactions:", transactions);
 
       const result = prepareIncomeBarChartVisualization(transactions);
-
-      console.log("IncomeOverview → chartData:", result);
 
       setChartData(result);
     }, [transactions]);

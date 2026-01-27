@@ -22,7 +22,7 @@ export const useUserAuth = () => {
                 updateUser(response.data.user);
             }
         } catch(error){
-            console.log("Failed to fetch user details", error);
+            console.log("Something went wrong. Please try again.", error);
 
             if(isMounted){
                 clearUser();

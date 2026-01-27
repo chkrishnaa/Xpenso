@@ -88,14 +88,10 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = 
-    // import.meta.env.VITE_GOOGLE_AUTH_URL;
-    "http://localhost:5000/api/v1/auth/google";
+    window.location.href = `${import.meta.env.VITE_BACKEND_URL}${
+      API_PATHS.AUTH.GOOGLE_AUTH_URL
+    }`;
   };
-
-
-
-
 
   return (
     <AuthLayout side="left">
@@ -144,14 +140,16 @@ const Login = () => {
           )}
 
           {/* Forgot password */}
-          <div className="text-right">
-            <Link
-              to="/forgot-password"
-              className="text-sm text-purple-300 hover:underline"
-            >
-              Forgot password?
-            </Link>
-          </div>
+          {formState.errors.submit && (
+            <div className="text-right mt-2">
+              <Link
+                to="/reset-password"
+                className="text-sm text-purple-400 hover:underline"
+              >
+                Forgot password?
+              </Link>
+            </div>
+          )}
 
           {/* Submit */}
           <button
