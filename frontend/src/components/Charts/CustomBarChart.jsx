@@ -101,6 +101,7 @@ const CustomBarChart = ({ data = [], type = "expense", xKey }) => {
           angle={-65}
           tickMargin={15}
           dy={8}
+          dx={-10}
           height={60}
           stroke={axisColor}
           tick={{ fill: axisColor, fontSize: 11 }}

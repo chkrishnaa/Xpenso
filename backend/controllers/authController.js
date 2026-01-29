@@ -140,7 +140,7 @@ exports.sendVerifyOtp = async (req, res) => {
 
     return res.json({
       success: true,
-      message: "Verification OTP generated (check console)",
+      message: "Email Verification Code sent successfully.",
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -260,7 +260,7 @@ exports.sendPasswordResetOtp = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: "Password reset OTP generated (check console)",
+      message: "Password Reset Code sent successfully",
     });
   } catch (error) {
     console.error("SEND RESET OTP ERROR:", error);

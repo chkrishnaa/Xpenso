@@ -95,11 +95,30 @@ const Login = () => {
 
   return (
     <AuthLayout side="left">
-      <div className="w-full max-w-md">
+      <div
+        className={`
+        w-full max-w-md p-8 rounded-2xl
+        bg-gradient-to-br
+        ${
+          darkMode
+            ? "from-gray-950 via-gray-900 to-gray-950"
+            : "from-blue-50 via-blue-100 to-blue-50"
+        }
+        shadow-xl
+      `}
+      >
         {/* Heading */}
         <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold text-gray-900">Welcome back</h2>
-          <p className="text-gray-300">Login to continue to JobiFy</p>
+          <h2
+            className={`text-2xl font-bold ${
+              darkMode ? "text-gray-100" : "text-gray-900"
+            }`}
+          >
+            Welcome back
+          </h2>
+          <p className={`${darkMode ? "text-gray-400" : "text-gray-500"}`}>
+            Login to continue to JobiFy
+          </p>
         </div>
 
         {/* Form */}
@@ -128,11 +147,12 @@ const Login = () => {
             required
           />
 
+          {/* Error */}
           {formState.errors.submit && (
             <p
-              className={`${
+              className={`text-sm mt-1 flex items-center ${
                 darkMode ? "text-red-400" : "text-red-500"
-              } text-sm mt-1 flex items-center`}
+              }`}
             >
               <LuCircleAlert className="w-4 h-4 mr-1" />
               {formState.errors.submit}
@@ -144,7 +164,9 @@ const Login = () => {
             <div className="text-right mt-2">
               <Link
                 to="/reset-password"
-                className="text-sm text-purple-400 hover:underline"
+                className={`text-sm hover:underline ${
+                  darkMode ? "text-blue-400" : "text-blue-600"
+                }`}
               >
                 Forgot password?
               </Link>
@@ -155,34 +177,67 @@ const Login = () => {
           <button
             type="submit"
             disabled={formState.loading}
-            className="w-full bg-purple-300 text-white py-3 rounded-lg font-medium hover:bg-purple-700 transition disabled:opacity-70"
+            className="
+            w-full py-3 rounded-lg font-medium text-white
+            bg-gradient-to-r from-blue-500 to-blue-600
+            hover:from-blue-600 hover:to-blue-700
+            transition disabled:opacity-70
+          "
           >
             {formState.loading ? "Signing in..." : "SIGN IN"}
           </button>
 
           {/* Divider */}
           <div className="flex items-center gap-3">
-            <div className="flex-1 h-px bg-gray-300" />
-            <span className="text-sm text-gray-500">OR</span>
-            <div className="flex-1 h-px bg-gray-300" />
+            <div
+              className={`flex-1 h-px ${
+                darkMode ? "bg-gray-700" : "bg-gray-300"
+              }`}
+            />
+            <span
+              className={`text-sm ${
+                darkMode ? "text-gray-400" : "text-gray-500"
+              }`}
+            >
+              OR
+            </span>
+            <div
+              className={`flex-1 h-px ${
+                darkMode ? "bg-gray-700" : "bg-gray-300"
+              }`}
+            />
           </div>
 
           {/* Google Login */}
           <button
             type="button"
             onClick={handleGoogleLogin}
-            className="w-full flex items-center justify-center gap-2
-  border border-purple-300 text-purple-300
-  py-3 rounded-lg hover:bg-purple-50 transition"
+            className={`
+            w-full flex items-center justify-center gap-2 py-3 rounded-lg transition
+            ${
+              darkMode
+                ? "border border-blue-500 text-blue-400 hover:bg-blue-900/30"
+                : "border border-blue-300 text-blue-600 hover:bg-blue-50"
+            }
+          `}
           >
             <FaGoogle />
             Sign in with Google
           </button>
 
           {/* Bottom link */}
-          <p className="text-center text-sm text-gray-300">
-            Don’t have an account?{" "}
-            <Link to="/signup" className="text-purple-300 hover:underline">
+          <p
+            className={`text-center text-sm ${
+              darkMode ? "text-gray-400" : "text-gray-500"
+            }`}
+          >
+            Don't have an account?{" "}
+            <Link
+              to="/signup"
+              className={`hover:underline ${
+                darkMode ? "text-blue-400" : "text-blue-600"
+              }`}
+            >
               Create one
             </Link>
           </p>
@@ -190,6 +245,8 @@ const Login = () => {
       </div>
     </AuthLayout>
   );
+
+
 };
 
 export default Login;

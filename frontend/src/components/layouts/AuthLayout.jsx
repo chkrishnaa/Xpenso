@@ -1,7 +1,19 @@
 import { motion, AnimatePresence } from "framer-motion";
+import ContentArea from "../Utility/ContentArea";
+import { useTheme } from "../../context/ThemeContext";
 
 const AuthLayout = ({ children, side = "left" }) => {
-  const isFormLeft = side === "left";
+  const isFormLeft = side === "left"; // left = login, right = signup
+  const { darkMode } = useTheme();
+
+  // 🔵 Login → Blue | 🟢 Signup → Green
+  const gradientClass = isFormLeft
+    ? darkMode
+      ? "from-blue-950 via-gray-950 to-blue-950"
+      : "from-blue-100 via-gray-50 to-blue-100"
+    : darkMode
+    ? "from-green-950 via-gray-950 to-green-950"
+    : "from-green-100 via-gray-50 to-green-100";
 
   // Animation variants
   const formVariants = {
@@ -29,9 +41,14 @@ const AuthLayout = ({ children, side = "left" }) => {
   };
 
   return (
-    <div className="flex w-screen h-screen overflow-hidden">
+    <div
+      className={`flex w-screen h-screen overflow-hidden
+        bg-gradient-to-br transition-colors duration-500
+        ${gradientClass}
+      `}
+    >
       <AnimatePresence mode="wait">
-        {/* FORM AREA */}
+        {/* FORM AREA (LEFT / LOGIN) */}
         {isFormLeft && (
           <motion.div
             key="form-left"
@@ -49,17 +66,16 @@ const AuthLayout = ({ children, side = "left" }) => {
         {/* CONTENT AREA */}
         <motion.div
           key={`content-${side}`}
-          className="hidden md:flex flex-1 items-center justify-center bg-gray-100"
           custom={side}
           variants={contentVariants}
           initial="hidden"
           animate="visible"
           exit="hidden"
         >
-          <p className="text-gray-500 text-lg">Content area</p>
+          <ContentArea />
         </motion.div>
 
-        {/* FORM AREA (RIGHT) */}
+        {/* FORM AREA (RIGHT / SIGNUP) */}
         {!isFormLeft && (
           <motion.div
             key="form-right"

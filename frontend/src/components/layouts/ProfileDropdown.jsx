@@ -59,7 +59,17 @@ const ProfileDropdown = ({
             </div>
           )}
 
-          
+          {user?.isAccountVerified && (
+            <div
+              className={`absolute  -bottom-1 -right-1 h-4 w-4 ${
+                darkMode ? "bg-gray-800" : "bg-white"
+              } rounded-full`}
+            >
+              <MdVerified
+                className={`absolute h-4 w-4 text-income`}
+              />
+            </div>
+          )}
         </div>
 
         <div className="hidden sm:block text-left">

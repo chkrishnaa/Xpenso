@@ -45,7 +45,7 @@ const ProfilePhoto = ({ image, setImage }) => {
         >
           <LuUser
             className={`text-4xl ${
-              darkMode ? "text-gray-300" : "text-primary"
+              darkMode ? "text-green-300" : "text-green-700"
             }`}
           />
 
@@ -54,7 +54,7 @@ const ProfilePhoto = ({ image, setImage }) => {
             type="button"
             onClick={() => inputRef.current.click()}
             className="w-8 h-8 flex items-center justify-center rounded-full
-              bg-primary text-white absolute -bottom-1 -right-1"
+              bg-green-500 text-white absolute -bottom-1 -right-1"
           >
             <LuUpload />
           </button>

@@ -8,10 +8,12 @@ import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { UserContext } from "../../context/UserContext";
 import ProfilePhoto from "../../components/Inputs/ProfilePhoto";
+import { useTheme } from "../../context/ThemeContext";
 
 const SignUp = () => {
   const navigate = useNavigate();
   const { updateUser } = useContext(UserContext);
+  const {darkMode} = useTheme();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -105,14 +107,30 @@ const SignUp = () => {
 
   return (
     <AuthLayout side="right">
-      <div className="w-full max-w-md">
-        {/* Heading */}
-        <div className="flex justify-between mb-8">
+      <div
+        className={`
+        w-full max-w-md p-8 rounded-2xl shadow-xl
+        bg-gradient-to-br
+        ${
+          darkMode
+            ? "from-gray-900 via-green-900/40 to-gray-900"
+            : "from-green-50 via-green-100 to-green-50"
+        }
+      `}
+      >
+        {/* Heading + Profile Photo */}
+        <div className="flex justify-between items-start mb-8">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">
+            <h2
+              className={`text-2xl font-bold ${
+                darkMode ? "text-gray-100" : "text-gray-900"
+              }`}
+            >
               Create an account
             </h2>
-            <p className="text-gray-300">Join Xpenso to manage your finances</p>
+            <p className={`${darkMode ? "text-gray-400" : "text-gray-500"}`}>
+              Join Xpenso to manage your finances
+            </p>
           </div>
 
           <ProfilePhoto
@@ -169,42 +187,82 @@ const SignUp = () => {
             />
           </div>
 
+          {/* Error */}
           {formState.errors.submit && (
-            <p className="text-red-500 text-sm text-center">
+            <p
+              className={`text-sm text-center ${
+                darkMode ? "text-red-400" : "text-red-500"
+              }`}
+            >
               {formState.errors.submit}
             </p>
           )}
 
+          {/* Submit */}
           <button
             type="submit"
             disabled={formState.loading}
-            className="w-full bg-purple-300 text-white py-3 rounded-lg font-medium hover:bg-purple-700 transition"
+            className="
+            w-full py-3 rounded-lg font-medium text-white
+            bg-gradient-to-r from-green-500 to-green-600
+            hover:from-green-600 hover:to-green-700
+            transition disabled:opacity-70
+          "
           >
             {formState.loading ? "Creating account..." : "SIGN UP"}
           </button>
 
           {/* Divider */}
           <div className="flex items-center gap-3">
-            <div className="flex-1 h-px bg-gray-300" />
-            <span className="text-sm text-gray-500">OR</span>
-            <div className="flex-1 h-px bg-gray-300" />
+            <div
+              className={`flex-1 h-px ${
+                darkMode ? "bg-gray-700" : "bg-gray-300"
+              }`}
+            />
+            <span
+              className={`text-sm ${
+                darkMode ? "text-gray-400" : "text-gray-500"
+              }`}
+            >
+              OR
+            </span>
+            <div
+              className={`flex-1 h-px ${
+                darkMode ? "bg-gray-700" : "bg-gray-300"
+              }`}
+            />
           </div>
 
           {/* Google Signup */}
           <button
             type="button"
             onClick={handleGoogleSignup}
-            className="w-full flex items-center justify-center gap-2
-              border border-purple-300 text-purple-300
-              py-3 rounded-lg hover:bg-purple-50 transition"
+            className={`
+            w-full flex items-center justify-center gap-2 py-3 rounded-lg transition
+            ${
+              darkMode
+                ? "border border-green-500 text-green-400 hover:bg-green-900/30"
+                : "border border-green-300 text-green-600 hover:bg-green-50"
+            }
+          `}
           >
             <FaGoogle />
             Sign up with Google
           </button>
 
-          <p className="text-center text-sm text-gray-300">
+          {/* Bottom link */}
+          <p
+            className={`text-center text-sm ${
+              darkMode ? "text-gray-400" : "text-gray-500"
+            }`}
+          >
             Already have an account?{" "}
-            <Link to="/login" className="text-purple-300 hover:underline">
+            <Link
+              to="/login"
+              className={`hover:underline ${
+                darkMode ? "text-green-400" : "text-green-600"
+              }`}
+            >
               Sign in
             </Link>
           </p>
@@ -212,6 +270,7 @@ const SignUp = () => {
       </div>
     </AuthLayout>
   );
+
 };
 
 export default SignUp;

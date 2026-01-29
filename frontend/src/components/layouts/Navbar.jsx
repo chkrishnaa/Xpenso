@@ -44,7 +44,7 @@ const Navbar = ({ activeMenu }) => {
     >
       {/* LEFT */}
       <div
-        className={`flex items-center gap-5 py-3 px-7 lg:w-64 border-r  ${
+        className={`flex items-center justify-center gap-5 py-3 px-7 lg:w-64 sm:border-r-0 lg:border-r  ${
           darkMode
             ? "border-gray-700"
             : "border-gray-300/50"
@@ -56,10 +56,10 @@ const Navbar = ({ activeMenu }) => {
           }`}
           onClick={() => setOpenSideMenu((p) => !p)}
         >
-          {openSideMenu ? <HiOutlineX /> : <HiOutlineMenu />}
+          {openSideMenu ? <HiOutlineX size={24} /> : <HiOutlineMenu size={24} />}
         </button>
 
-        <h2 className={`${darkMode ? "text-white" : "text-black"} text-2xl`}>
+        <h2 className={`${darkMode ? "text-white" : "text-black"} text-2xl hidden lg:block`}>
           Xpenso
         </h2>
 
@@ -74,12 +74,12 @@ const Navbar = ({ activeMenu }) => {
       </div>
 
       {/* RIGHT */}
-      <div className="flex-1 flex items-center justify-between px-4">
+      <div className="flex-1 flex items-center justify-between">
         <div>
-          <p className={darkMode ? "text-gray-200" : "text-gray-800"}>
+          <p className={`font-bold ${darkMode ? "text-gray-200" : "text-gray-800"}`}>
             Welcome to your Dashboard
           </p>
-          <p className={darkMode ? "text-gray-400" : "text-gray-500"}>
+          <p className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
             Track your income and expenses easily.
           </p>
         </div>

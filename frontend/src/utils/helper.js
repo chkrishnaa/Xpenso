@@ -77,6 +77,13 @@ export const addThousandsSeperator = (num) => {
   : formattedIntegerPart;
 };
 
+export const formatTime = (sec) => {
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return `${m}:${s.toString().padStart(2, "0")}`;
+};
+
+
 export const truncateLabel = (text, maxLength = 10) => {
   if (!text) return "";
   if (text.length <= maxLength) return text;
