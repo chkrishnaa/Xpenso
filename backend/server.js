@@ -34,4 +34,6 @@ app.use("/api/v1/dashboard", dashboardRoutes);
 
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`)
+//     console.log(`CLIENT_URL: ${process.env.CLIENT_URL}`)
+//     console.log(`GOOGLE_CALLBACK_URL: ${process.env.GOOGLE_CALLBACK_URL}`)
 })

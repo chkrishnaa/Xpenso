@@ -48,7 +48,7 @@ const Input = ({
                   ? "border-red-400 bg-gray-800 text-gray-300 placeholder-gray-500"
                   : "border-red-500 bg-white text-gray-900 placeholder-gray-400"
                 : darkMode
-                ? "border-gray-300 bg-gray-800 text-gray-300"
+                ? "border-gray-700 bg-gray-800 text-gray-300"
                 : "border-gray-300 bg-white text-gray-900"
             }
             focus:ring-purple-500 focus:border-transparent`}

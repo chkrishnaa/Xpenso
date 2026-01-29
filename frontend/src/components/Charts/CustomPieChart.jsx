@@ -1,19 +1,49 @@
-import React from 'react'
-import {PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend,} from 'recharts'
-// import CustomTooltip from './CustomTooltip';
-import CustomLegend from './CustomLegend';
+import React from "react";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
+import CustomLegend from "./CustomLegend";
+import { useTheme } from "../../context/ThemeContext";
 
-const CustomPieChart = ({...props}) => {
+const CustomPieChart = ({ ...props }) => {
+  const { darkMode } = useTheme();
+
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white shadow-md rounded-lg p-2 border border-gray-300">
-          <p className="text-xs font-semibold text-purple-800 mb-1">
+        <div
+          className={`rounded-lg p-2 border shadow-md
+            ${
+              darkMode
+                ? "bg-gray-900 border-gray-700"
+                : "bg-white border-gray-300"
+            }
+          `}
+        >
+          <p
+            className={`text-xs font-semibold mb-1 ${
+              darkMode ? "text-gray-200" : "text-purple-800"
+            }`}
+          >
             {payload[0].name}
           </p>
-          <p className="text-sm text-gray-300">
+
+          <p
+            className={`text-sm ${
+              darkMode ? "text-gray-400" : "text-gray-500"
+            }`}
+          >
             Amount:{" "}
-            <span className="text-sm font-medium text-gray-900">
+            <span
+              className={`font-medium ${
+                darkMode ? "text-gray-100" : "text-gray-900"
+              }`}
+            >
               {payload[0].value}
             </span>
           </p>
@@ -35,35 +65,43 @@ const CustomPieChart = ({...props}) => {
           innerRadius={100}
           outerRadius={130}
           labelLine={false}
+          stroke={darkMode ? "#111827" : "#ffffff"}
+          strokeWidth={1}
         >
           {props.data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={props.colors[index % props.colors.length]} />
+            <Cell
+              key={`cell-${index}`}
+              fill={props.colors[index % props.colors.length]}
+            />
           ))}
         </Pie>
+
         <Tooltip content={CustomTooltip} />
-        <Legend content={CustomLegend}/>
+        <Legend content={CustomLegend} />
 
         {props.showTextAnchor && (
           <>
+            {/* Label */}
             <text
               x="50%"
               y="50%"
               dy={-25}
               textAnchor="middle"
-              fill="#666"
+              fill={darkMode ? "#9CA3AF" : "#666"}
               fontSize="14px"
             >
               {props.label}
             </text>
 
+            {/* Total */}
             <text
               x="50%"
               y="50%"
               dy={10}
               textAnchor="middle"
-              fill="#333"
+              fill={darkMode ? "#F9FAFB" : "#333"}
               fontSize="24px"
-              fontWeight="semi-bold"
+              fontWeight={600}
             >
               {props.totalAmount}
             </text>
@@ -72,6 +110,6 @@ const CustomPieChart = ({...props}) => {
       </PieChart>
     </ResponsiveContainer>
   );
-}
+};
 
-export default CustomPieChart
+export default CustomPieChart;

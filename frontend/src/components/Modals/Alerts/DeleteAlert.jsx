@@ -1,16 +1,26 @@
-import React from 'react'
+import React from "react";
+import { useTheme } from "../../../context/ThemeContext";
 
-const DeleteAlert = ({content, onDelete}) => {
+const DeleteAlert = ({ content, onDelete }) => {
+  const { darkMode } = useTheme();
+
   return (
     <div>
-        <p className="text-sm">{content}</p>
-        <div className="flex justify-end mt-6">
+      <p className={`text-sm ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
+        {content}
+      </p>
 
-            <button className="text-sm bg-red-400 hover:bg-red-500 px-3 py-2 rounded-md" onClick={onDelete}>Delete</button>
-        </div>
-      
+      <div className="flex justify-end mt-6">
+        <button
+          onClick={onDelete}
+          className="text-sm px-3 py-2 rounded-md transition
+            bg-red-500 hover:bg-red-600 text-white"
+        >
+          Delete
+        </button>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default DeleteAlert
+export default DeleteAlert;
