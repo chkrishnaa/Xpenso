@@ -94,34 +94,37 @@ const buildTotalAggregate = (transactions) => {
   ];
 };
 
-const CustomYAxisTick = ({ x, y, payload }) => {
-  let color = "#3B82F6"; // balance (0)
+const CustomYAxisTick =
+  (fontSize) =>
+  ({ x, y, payload }) => {
+    let color = "#3B82F6"; // balance (0)
 
-  if (payload.value > 0) color = "#16A34A"; // income
-  if (payload.value < 0) color = "#EF4444"; // expense
+    if (payload.value > 0) color = "#16A34A"; // income
+    if (payload.value < 0) color = "#EF4444"; // expense
 
-  return (
-    <text
-      x={x - 4} // 👈 pulls text closer, uses free space
-      y={y}
-      textAnchor="end"
-      dominantBaseline="middle"
-      fill={color}
-      fontSize={10} // 👈 SMALL text (mobile safe)
-      fontWeight={500}
-    >
-      {formatNumber(Math.abs(payload.value))}
-    </text>
-  );
-};
+    return (
+      <text
+        x={x - 4} // 👈 pulls text closer, uses free space
+        y={y}
+        textAnchor="end"
+        dominantBaseline="middle"
+        fill={color}
+        fontSize={fontSize} // 👈 SMALL text (mobile safe)
+        fontWeight={500}
+      >
+        {formatNumber(Math.abs(payload.value))}
+      </text>
+    );
+  };
 
 /* ================= COMPONENT ================= */
 
 const CumulativeIncomeExpenseChart = ({ transactions }) => {
   const windowWidth = useWindowWidth();
   const chartHeight = windowWidth > 400 ? 400 : 300;
+  const chartYAxisWidth = windowWidth > 400 ? 60 : 35;
   const isMobile = windowWidth <= 400;
-  const axisFontSize = isMobile ? 10 : 12;
+  const axisFontSize = isMobile ? 10 : 14;
 
 
   const [mode, setMode] = useState("individual");
@@ -155,11 +158,11 @@ const CumulativeIncomeExpenseChart = ({ transactions }) => {
 
   return (
     <div
-      className={`p-4 mob:p-6 rounded-2xl border transition-colors duration-300bg-gradient-to-br
+      className={`p-2 mob:p-6 rounded-none mob:rounded-xl sm:rounded-2xl border-b mob:border transition-colors duration-300 bg-gradient-to-b
         ${
           darkMode
-            ? "from-gray-950 via-gray-900 to-gray-950 border-gray-700/50 shadow-lg shadow-gray-500/30"
-            : "from-blue-50 via-blue-100 to-blue-50 border-gray-200/50 shadow-md shadow-gray-500/30"
+            ? "from-gray-950 via-gray-950 to-gray-900 border-gray-600 shadow-lg shadow-gray-500/30"
+            : "from-blue-50 via-blue-50 to-blue-100 border-blue-300 shadow-md shadow-gray-500/30"
         }
       `}
     >
@@ -209,11 +212,10 @@ const CumulativeIncomeExpenseChart = ({ transactions }) => {
             <CartesianGrid vertical={false} stroke={gridColor} />
             <XAxis dataKey="label" stroke={axisColor} tick={{ fontSize: axisFontSize}} />
             <YAxis
-              tick={<CustomYAxisTick />}
+              tick={CustomYAxisTick(axisFontSize)}
               axisLine={{ stroke: axisColor }}
               tickLine={false}
-              // tick={{ fontSize: axisFontSize }}
-              width={48} // 👈 IMPORTANT: prevents extra empty space
+              width={chartYAxisWidth} // 👈 IMPORTANT: prevents extra empty space
             />
 
             <Tooltip
@@ -239,10 +241,10 @@ const CumulativeIncomeExpenseChart = ({ transactions }) => {
             <CartesianGrid vertical={false} stroke={gridColor} />
             <XAxis dataKey="date" stroke={axisColor} tick={{ fontSize: 10 }} />
             <YAxis
-              tick={<CustomYAxisTick />}
+              tick={CustomYAxisTick(axisFontSize)}
               axisLine={{ stroke: axisColor }}
               tickLine={false}
-              width={48} // 👈 IMPORTANT: prevents extra empty space
+              width={chartYAxisWidth} // 👈 IMPORTANT: prevents extra empty space
             />
             <Tooltip
               contentStyle={{
@@ -282,10 +284,10 @@ const CumulativeIncomeExpenseChart = ({ transactions }) => {
             />
             <XAxis dataKey="label" stroke={axisColor} tick={{ fontSize: 10 }} />
             <YAxis
-              tick={<CustomYAxisTick />}
+              tick={CustomYAxisTick(axisFontSize)}
               axisLine={{ stroke: axisColor }}
               tickLine={false}
-              width={48} // 👈 IMPORTANT: prevents extra empty space
+              width={chartYAxisWidth} // 👈 IMPORTANT: prevents extra empty space
             />
             <Tooltip
               contentStyle={{

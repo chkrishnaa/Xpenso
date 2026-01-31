@@ -36,3 +36,12 @@
 .animate-progress-bar {
   animation: progress-bar 3s linear infinite;
 }
+
+/* Disable focus outline on Recharts SVG */
+.recharts-wrapper svg:focus {
+  outline: none;
+}
+
+.recharts-wrapper svg {
+  outline: none;
+}

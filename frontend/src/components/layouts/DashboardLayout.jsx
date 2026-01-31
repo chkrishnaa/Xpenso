@@ -25,7 +25,7 @@ const DashboardLayout = ({ children, activeMenu }) => {
           }
           `}
         >
-          <div className="mx-3 sm:mx-5">{children}</div>
+          <div className="mx-0 mob:mx-3 sm:mx-5">{children}</div>
         </div>{" "}
       </div>
     </div>

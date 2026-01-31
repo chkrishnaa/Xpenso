@@ -26,17 +26,17 @@ const TransactionInfoCard = ({ ...props }) => {
 
   return (
     <div
-      className={`group relative flex items-center gap-4 px-3 py-2 rounded-lg border transition-colors
+      className={`group relative flex items-center gap-2 mob:gap-4 px-2 mob:px-3 py-2 rounded-md mob:rounded-lg border transition-colors
         ${
           darkMode
             ? "border-gray-700 hover:bg-white/5"
-            : "border-blue-200 hover:bg-gray-100/30"
+            : "border-blue-200 hover:bg-blue-100/90"
         }
       `}
     >
       {/* Icon */}
       <div
-        className={`w-12 h-12 flex items-center justify-center text-xl rounded-full
+        className={`w-10 mob:w-12 h-10 mob:h-12 flex items-center justify-center text-xl rounded-full
           ${
             darkMode ? "bg-gray-800 text-gray-300" : "bg-gray-100 text-gray-800"
           }

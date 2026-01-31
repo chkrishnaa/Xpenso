@@ -52,7 +52,7 @@ const Dashboard = () => {
   return (
     <DashboardLayout activeMenu="dashboard">
       <div className="my-5 mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mob:gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mob:gap-5 mx-3 mob:mx-0">
           <InfoCard
             icon={<IoMdCard />}
             label="Total Balance"
@@ -94,7 +94,7 @@ const Dashboard = () => {
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mob:gap-5 mt-0 mob:mt-5">
           <RecentTransactions
             transactions={dashboardData?.recentTransactions}
             onSeeMore={() => navigate("/expense")}

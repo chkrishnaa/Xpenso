@@ -6,11 +6,11 @@ const InfoCard = ({ icon, label, value, color }) => {
 
   return (
     <div
-      className={`flex gap-6 p-6 rounded-xl mob:rounded-2xl border transition-all duration-300
+      className={`flex gap-6 p-6 rounded-xl mob:rounded-2xl border transition-all duration-300 bg-gradient-to-b
         ${
           darkMode
-            ? "from-gray-950 via-gray-900 to-gray-950 border-gray-700/50 shadow-lg shadow-gray-500/30"
-            : "from-blue-50 via-blue-100 to-blue-50 border-gray-200/50 shadow-md shadow-gray-500/30"
+            ? "from-gray-950 via-gray-950 to-gray-900/70 border-gray-700/50 shadow-lg shadow-gray-500/30"
+            : "from-blue-50 via-blue-50 to-blue-100 border-gray-200/50 shadow-md shadow-gray-500/30"
         }
       `}
     >

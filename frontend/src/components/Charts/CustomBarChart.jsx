@@ -11,6 +11,27 @@ import {
 } from "recharts";
 import { truncateLabel } from "../../utils/helper";
 import { useTheme } from "../../context/ThemeContext";
+import { formatNumber } from "../../utils/helper";
+import { useWindowWidth } from "../../hooks/useWindowWidth";
+
+const CustomYAxisTick =
+  (fontSize) =>
+  ({ x, y, payload }) => {
+    
+
+    return (
+      <text
+        x={x - 4} // 👈 pulls text closer, uses free space
+        y={y}
+        textAnchor="end"
+        dominantBaseline="middle"
+        fontSize={fontSize} // 👈 SMALL text (mobile safe)
+        fontWeight={500}
+      >
+        {formatNumber(Math.abs(payload.value))}
+      </text>
+    );
+  };
 
 const CustomBarChart = ({ data = [], type = "expense", xKey }) => {
   const { darkMode } = useTheme();
@@ -27,6 +48,12 @@ const CustomBarChart = ({ data = [], type = "expense", xKey }) => {
     }
     return index % 2 === 0 ? "#16A34A" : "#4ADE80";
   };
+
+  const windowWidth = useWindowWidth();
+  const chartHeight = windowWidth > 400 ? 400 : 300;
+  const chartYAxisWidth = windowWidth > 400 ? 60 : 35;
+  const isMobile = windowWidth <= 400;
+  const axisFontSize = isMobile ? 10 : 14;
 
   // Tooltip (surface only changes)
   const CustomTooltip = ({ active, payload }) => {
@@ -90,7 +117,7 @@ const CustomBarChart = ({ data = [], type = "expense", xKey }) => {
   };
 
   return (
-    <ResponsiveContainer width="100%" height={400}>
+    <ResponsiveContainer width="100%" height={chartHeight}>
       <BarChart data={data}>
         {/* GRID */}
         <CartesianGrid stroke={gridColor} vertical={false} horizontal />
@@ -104,7 +131,7 @@ const CustomBarChart = ({ data = [], type = "expense", xKey }) => {
           dx={-10}
           height={60}
           stroke={axisColor}
-          tick={{ fill: axisColor, fontSize: 11 }}
+          tick={{ fill: axisColor, fontSize: axisFontSize }}
           tickFormatter={(value) => truncateLabel(value.split(" ")[0], 10)}
         />
 
@@ -112,9 +139,11 @@ const CustomBarChart = ({ data = [], type = "expense", xKey }) => {
         <YAxis
           allowDecimals={false}
           stroke={axisColor}
-          tick={{ fill: axisColor, fontSize: 12 }}
+          tick={CustomYAxisTick(axisFontSize)}
+          fill={axisColor}
           tickLine={{ stroke: axisColor }}
           axisLine={{ stroke: axisColor }}
+          width={chartYAxisWidth}
         />
 
         {/* TOOLTIP */}
