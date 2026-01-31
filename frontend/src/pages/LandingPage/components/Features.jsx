@@ -19,60 +19,87 @@ const Features = () => {
       title: "Track Income",
       description:
         "Record all income sources with clear categorization and understand where your money comes from.",
-      color: darkMode ? "text-green-400" : "text-green-600",
-      bg: darkMode ? "bg-green-900/40" : "bg-green-100",
+      iconColor: darkMode ? "text-green-200" : "text-green-600",
+      iconBg: darkMode
+        ? "from-green-400 to-green-800"
+        : "from-green-200 to-green-400",
     },
     {
       icon: FaArrowDown,
       title: "Manage Expenses",
       description:
         "Log daily expenses, categorize spending, and identify unnecessary outflows instantly.",
-      color: darkMode ? "text-red-400" : "text-red-600",
-      bg: darkMode ? "bg-red-900/40" : "bg-red-100",
+      iconColor: darkMode ? "text-red-200" : "text-red-600",
+      iconBg: darkMode ? "from-red-400 to-red-800" : "from-red-200 to-red-400",
     },
     {
       icon: FaWallet,
       title: "Real-Time Balance",
       description:
         "Always know your current balance with automatic calculations across income and expenses.",
-      color: darkMode ? "text-blue-400" : "text-blue-600",
-      bg: darkMode ? "bg-blue-900/40" : "bg-blue-100",
+      iconColor: darkMode ? "text-blue-200" : "text-blue-600",
+      iconBg: darkMode
+        ? "from-blue-400 to-blue-800"
+        : "from-blue-200 to-blue-400",
     },
     {
       icon: FaChartPie,
       title: "Smart Analytics",
       description:
         "Visual analytics help you understand spending patterns and financial habits over time.",
-      color: darkMode ? "text-blue-400" : "text-blue-600",
-      bg: darkMode ? "bg-blue-900/40" : "bg-blue-100",
+      iconColor: darkMode ? "text-blue-200" : "text-blue-600",
+      iconBg: darkMode
+        ? "from-blue-400 to-blue-800"
+        : "from-blue-200 to-blue-400",
     },
     {
       icon: FaCalendarAlt,
       title: "Monthly Reports",
       description:
         "Get monthly summaries of income, expenses, and savings to plan ahead with confidence.",
-      color: darkMode ? "text-green-400" : "text-green-600",
-      bg: darkMode ? "bg-green-900/40" : "bg-green-100",
+      iconColor: darkMode ? "text-green-200" : "text-green-600",
+      iconBg: darkMode
+        ? "from-green-400 to-green-800"
+        : "from-green-200 to-green-400",
     },
     {
       icon: FaLock,
       title: "Secure & Private",
       description:
         "Your financial data is protected with secure authentication and privacy-first design.",
-      color: darkMode ? "text-gray-300" : "text-gray-700",
-      bg: darkMode ? "bg-gray-800" : "bg-gray-100",
+      iconColor: darkMode ? "text-gray-200" : "text-gray-700",
+      iconBg: darkMode
+        ? "from-gray-500 to-gray-800"
+        : "from-gray-200 to-gray-400",
     },
   ];
 
   return (
     <section
       id="features"
-      className={`py-24 transition-colors ${
+      className={`relative py-24 overflow-hidden ${
         darkMode ? "bg-gray-950" : "bg-white"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4">
-        {/* Section Header */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Blue Blob */}
+        <div
+          className={`absolute top-40 left-16 w-72 h-72 rounded-full blur-[120px]
+            ${darkMode ? "bg-blue-600 opacity-80" : "bg-blue-300 opacity-100"}
+          `}
+        />
+
+        {/* Green Blob */}
+        <div
+          className={`absolute bottom-60 right-20 w-80 h-80 rounded-full blur-[140px]
+            ${darkMode ? "bg-green-600 opacity-95" : "bg-green-300 opacity-100"}
+          `}
+        />
+      </div>
+
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4">
+        {/* HEADER */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -85,10 +112,8 @@ const Features = () => {
               darkMode ? "text-white" : "text-gray-900"
             }`}
           >
-            Everything you need to
-            <span
-              className={`ml-2 ${darkMode ? "text-blue-400" : "text-blue-600"}`}
-            >
+            Everything you need to{" "}
+            <span className="bg-gradient-to-r from-blue-500 to-green-400 bg-clip-text text-transparent">
               manage money
             </span>
           </h2>
@@ -103,7 +128,7 @@ const Features = () => {
           </p>
         </motion.div>
 
-        {/* Features Grid */}
+        {/* FEATURES GRID */}
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {FEATURES.map((feature, index) => {
             const Icon = feature.icon;
@@ -114,16 +139,22 @@ const Features = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
                 viewport={{ once: true }}
-                className={`p-6 rounded-2xl border transition-shadow ${
-                  darkMode
-                    ? "border-gray-800 bg-gray-900 hover:shadow-[0_10px_30px_rgba(0,0,0,0.6)]"
-                    : "border-gray-200 bg-white hover:shadow-lg"
-                }`}
+                className={`p-6 rounded-2xl border backdrop-blur-sm transition-all
+                  hover:-translate-y-1 hover:shadow-lg
+                  bg-gradient-to-br
+                  ${
+                    darkMode
+                      ? "from-gray-950 via-gray-900 to-gray-950 border-gray-800"
+                      : "from-gray-100 via-white to-gray-100 border-gray-200"
+                  }
+                `}
               >
+                {/* ICON */}
                 <div
-                  className={`w-12 h-12 ${feature.bg} rounded-xl flex items-center justify-center mb-4`}
+                  className={`w-12 h-12 bg-gradient-to-br ${feature.iconBg}
+                    rounded-xl flex items-center justify-center mb-4`}
                 >
-                  <Icon className={`w-6 h-6 ${feature.color}`} />
+                  <Icon className={`w-6 h-6 ${feature.iconColor}`} />
                 </div>
 
                 <h3

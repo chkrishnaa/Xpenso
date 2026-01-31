@@ -6,6 +6,7 @@ import { useTheme } from "../../context/ThemeContext";
 import ProfileDropdown from "./ProfileDropdown";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
+import { LuWalletMinimal } from "react-icons/lu";
 
 const Navbar = ({ activeMenu }) => {
   const [openSideMenu, setOpenSideMenu] = useState(false);
@@ -45,9 +46,7 @@ const Navbar = ({ activeMenu }) => {
       {/* LEFT */}
       <div
         className={`flex items-center justify-center gap-5 py-3 px-7 lg:w-64 sm:border-r-0 lg:border-r  ${
-          darkMode
-            ? "border-gray-700"
-            : "border-gray-300/50"
+          darkMode ? "border-gray-700" : "border-gray-300/50"
         }`}
       >
         <button
@@ -56,12 +55,35 @@ const Navbar = ({ activeMenu }) => {
           }`}
           onClick={() => setOpenSideMenu((p) => !p)}
         >
-          {openSideMenu ? <HiOutlineX size={24} /> : <HiOutlineMenu size={24} />}
+          {openSideMenu ? (
+            <HiOutlineX size={24} />
+          ) : (
+            <HiOutlineMenu size={24} />
+          )}
         </button>
 
-        <h2 className={`${darkMode ? "text-white" : "text-black"} text-2xl hidden lg:block`}>
-          Xpenso
-        </h2>
+          <button
+            onClick={() => navigate("/")}
+            className="hidden sm:flex items-center gap-3 sm:block"
+          >
+            <div
+              className={`w-9 h-9 rounded-lg flex items-center justify-center shadow-sm ${
+                darkMode
+                  ? "bg-gradient-to-br from-green-500 to-blue-500"
+                  : "bg-gradient-to-br from-green-400 to-blue-400"
+              }`}
+            >
+              <LuWalletMinimal className="w-5 h-5 text-white" />
+            </div>
+
+            <span
+              className={`text-3xl font-semibold tracking-tight ${
+                darkMode ? "text-white" : "text-gray-900"
+              }`}
+            >
+              Xpenso
+            </span>
+          </button>
 
         {openSideMenu && (
           <div
@@ -75,14 +97,24 @@ const Navbar = ({ activeMenu }) => {
 
       {/* RIGHT */}
       <div className="flex-1 flex items-center justify-between">
-        <div>
-          <p className={`font-bold ${darkMode ? "text-gray-200" : "text-gray-800"}`}>
+        <div className="hidden lg:block">
+          <p
+            className={`font-bold ${
+              darkMode ? "text-gray-200" : "text-gray-800"
+            }`}
+          >
             Welcome to your Dashboard
           </p>
-          <p className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
+          <p
+            className={`text-sm ${
+              darkMode ? "text-gray-400" : "text-gray-500"
+            }`}
+          >
             Track your income and expenses easily.
           </p>
         </div>
+
+        <div></div>
 
         <div className="flex items-center gap-4">
           {isLoggedIn ? (

@@ -22,4 +22,15 @@
     }
 }
 
+@keyframes progress-bar {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
 
+.animate-progress-bar {
+  animation: progress-bar 3s linear infinite;
+}

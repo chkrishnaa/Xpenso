@@ -108,23 +108,26 @@ const SideMenu = ({ activeMenu }) => {
       </div>
 
       {/* MENU ITEMS */}
+
       <div className="flex flex-col">
         {SIDE_MENU_DATA.map((item, index) => {
           const isActive = currentPath === item.path;
+          const isHome = item.label === "Home";
 
           return (
             <button
               key={`menu_${index}`}
               className={`w-full flex items-center gap-4 text-[15px] py-3 px-6 rounded-lg mb-2 transition
-                ${
-                  isActive
-                    ? darkMode
-                      ? "bg-balance text-white"
-                      : "bg-balance text-white"
-                    : darkMode
-                    ? "text-gray-300 hover:bg-gray-800"
-                    : "text-gray-700 hover:bg-gray-200"
-                }`}
+          ${
+            isHome
+              ? "sm:hidden bg-gradient-to-r from-green-500 to-blue-500 text-white hover:bg-gradient-to-r hover:from-green-600 hover:to-blue-600"
+              : isActive
+              ? "bg-balance text-white"
+              : darkMode
+              ? "text-gray-300 hover:bg-gray-800"
+              : "text-gray-700 hover:bg-gray-200"
+          }
+        `}
               onClick={() => handleClick(item.path)}
               aria-current={isActive ? "page" : undefined}
             >

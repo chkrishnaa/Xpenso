@@ -71,6 +71,7 @@ const AuthLayout = ({ children, side = "left" }) => {
           initial="hidden"
           animate="visible"
           exit="hidden"
+          className="hidden lg:flex flex-1"
         >
           <ContentArea />
         </motion.div>

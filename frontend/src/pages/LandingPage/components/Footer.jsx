@@ -8,36 +8,52 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useTheme } from "../../../context/ThemeContext";
+import { LuWalletMinimal } from "react-icons/lu";
 
 const Footer = () => {
   const { darkMode } = useTheme();
 
   return (
     <footer
-      className={`border-t transition-colors ${
-        darkMode ? "bg-gray-900 border-gray-800" : "bg-gray-100 border-gray-200"
+      className={`transition-colors ${
+        darkMode ? "bg-gray-900" : "bg-gray-100"
       }`}
     >
+      {/* ===== Animated Top Progress Bar ===== */}
+      <div
+        className={`relative h-[2px] ${
+          darkMode ? "bg-gray-700" : "bg-gray-200"
+        } w-full overflow-hidden`}
+      >
+        <div
+          className="absolute inset-0 animate-progress-bar
+      bg-gradient-to-r from-blue-500 via-green-400 to-blue-500"
+        />
+      </div>
+
       <div className="max-w-7xl mx-auto px-6 py-14">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {/* Left: Logo + Socials */}
           <div className="flex flex-col gap-5">
-            <div className="flex items-center gap-3">
+            <Link to="/" className="flex items-center gap-3">
               <div
-                className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                  darkMode ? "bg-blue-700" : "bg-blue-600"
+                className={`w-9 h-9 rounded-lg flex items-center justify-center shadow-sm ${
+                  darkMode
+                    ? "bg-gradient-to-br from-green-500 to-blue-500"
+                    : "bg-gradient-to-br from-green-400 to-blue-400"
                 }`}
               >
-                <FaWallet className="text-white w-5 h-5" />
+                <LuWalletMinimal className="w-5 h-5 text-white" />
               </div>
+
               <span
-                className={`text-xl font-semibold ${
+                className={`text-3xl font-semibold tracking-tight ${
                   darkMode ? "text-white" : "text-gray-900"
                 }`}
               >
                 Xpenso
               </span>
-            </div>
+            </Link>
 
             <p
               className={`text-sm leading-relaxed max-w-xs ${
@@ -58,7 +74,7 @@ const Footer = () => {
                     : "text-gray-500 hover:text-pink-500"
                 }`}
               >
-                <FaInstagram size={20} />
+                <FaInstagram size={24} />
               </a>
               <a
                 href="#"
@@ -69,7 +85,7 @@ const Footer = () => {
                     : "text-gray-500 hover:text-blue-600"
                 }`}
               >
-                <FaFacebook size={20} />
+                <FaFacebook size={24} />
               </a>
               <a
                 href="#"
@@ -80,7 +96,7 @@ const Footer = () => {
                     : "text-gray-500 hover:text-gray-900"
                 }`}
               >
-                <FaGithub size={20} />
+                <FaGithub size={24} />
               </a>
               <a
                 href="#"
@@ -91,13 +107,13 @@ const Footer = () => {
                     : "text-gray-500 hover:text-red-600"
                 }`}
               >
-                <FaYoutube size={20} />
+                <FaYoutube size={24} />
               </a>
             </div>
           </div>
 
           {/* Right: Links */}
-          <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
             {/* Policies */}
             <div>
               <h4

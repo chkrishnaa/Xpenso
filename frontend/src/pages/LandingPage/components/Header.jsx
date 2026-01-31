@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { LuWalletMinimal } from "react-icons/lu";
 import ToggleMode from "../../../components/Utility/ToggleMode";
 import { useTheme } from "../../../context/ThemeContext";
+import { UserContext } from "../../../context/UserContext";
 
 const Header = () => {
   const { darkMode } = useTheme();
+  const { user, clearUser } = useContext(UserContext);
+
+  const IsLoggedIn = !!user;
 
   return (
     <motion.header
@@ -26,15 +30,15 @@ const Header = () => {
             <div
               className={`w-9 h-9 rounded-lg flex items-center justify-center shadow-sm ${
                 darkMode
-                  ? "bg-gradient-to-br from-green-500 to-red-500"
-                  : "bg-gradient-to-br from-green-400 to-red-400"
+                  ? "bg-gradient-to-br from-green-500 to-blue-500"
+                  : "bg-gradient-to-br from-green-400 to-blue-400"
               }`}
             >
               <LuWalletMinimal className="w-5 h-5 text-white" />
             </div>
 
             <span
-              className={`text-xl font-semibold tracking-tight ${
+              className={`text-3xl font-semibold tracking-tight ${
                 darkMode ? "text-white" : "text-gray-900"
               }`}
             >
@@ -68,7 +72,7 @@ const Header = () => {
 
           {/* Actions */}
           <div className="flex items-center gap-3">
-            {true ? (
+            {IsLoggedIn ? (
               <Link
                 to="/dashboard"
                 className={`px-4 py-2 rounded-lg text-sm font-medium text-white transition shadow-sm ${
@@ -106,8 +110,8 @@ const Header = () => {
             )}
 
             {/* Theme Toggle */}
-            <ToggleMode className="scale-75" />
           </div>
+          <ToggleMode className="scale-75" />
         </div>
       </div>
     </motion.header>
