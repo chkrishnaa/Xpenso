@@ -158,7 +158,7 @@ const CumulativeIncomeExpenseChart = ({ transactions }) => {
 
   return (
     <div
-      className={`p-2 mob:p-6 rounded-none mob:rounded-xl sm:rounded-2xl border-b mob:border transition-colors duration-300 bg-gradient-to-b
+      className={`px-2 py-6 mob:px-6 rounded-none mob:rounded-xl sm:rounded-2xl border-t mob:border transition-colors duration-300 bg-gradient-to-b
         ${
           darkMode
             ? "from-gray-950 via-gray-950 to-gray-900 border-gray-600 shadow-lg shadow-gray-500/30"
@@ -210,7 +210,11 @@ const CumulativeIncomeExpenseChart = ({ transactions }) => {
         {mode === "individual" && (
           <BarChart data={individualData}>
             <CartesianGrid vertical={false} stroke={gridColor} />
-            <XAxis dataKey="label" stroke={axisColor} tick={{ fontSize: axisFontSize}} />
+            <XAxis
+              dataKey="label"
+              stroke={axisColor}
+              tick={{ fontSize: axisFontSize }}
+            />
             <YAxis
               tick={CustomYAxisTick(axisFontSize)}
               axisLine={{ stroke: axisColor }}

@@ -234,8 +234,8 @@ const Footer = () => {
         <div
           className={`mt-12 pt-6 border-t text-center text-sm ${
             darkMode
-              ? "border-gray-800 text-gray-500"
-              : "border-gray-200 text-gray-500"
+              ? "border-gray-00 text-gray-500"
+              : "border-gray-300 text-gray-500"
           }`}
         >
           <p className="mb-2">

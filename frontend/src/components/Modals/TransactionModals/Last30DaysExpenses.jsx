@@ -14,11 +14,11 @@ const Last30DaysExpenses = ({ data }) => {
 
   return (
     <div
-      className={`p-6 rounded-2xl border col-span-1 transition-colors duration-300
+      className={`px-2 py-6 mob:px-6 rounded-none mob:rounded-xl sm:rounded-2xl border-t mob:border transition-colors duration-300 bg-gradient-to-b shadow-none mob:shadow-lg
         ${
           darkMode
-            ? "bg-gray-900/80 border-gray-700 shadow-lg shadow-black/30"
-            : "bg-white border-gray-200/50 shadow-md shadow-gray-100"
+            ? "from-gray-950 via-gray-950 to-gray-900 border-gray-600 shadow-gray-500/30"
+            : "from-blue-50 via-blue-50 to-blue-100 border-blue-300 shadow-gray-500/30"
         }
       `}
     >

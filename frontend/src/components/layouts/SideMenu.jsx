@@ -120,7 +120,7 @@ const SideMenu = ({ activeMenu }) => {
               className={`w-full flex items-center gap-4 text-[15px] py-3 px-6 rounded-lg mb-2 transition
           ${
             isHome
-              ? "sm:hidden bg-gradient-to-r from-green-500 to-blue-500 text-white hover:bg-gradient-to-r hover:from-green-600 hover:to-blue-600"
+              ? "lg:hidden bg-gradient-to-r from-green-500 to-blue-500 text-white hover:bg-gradient-to-r hover:from-green-600 hover:to-blue-600"
               : isActive
               ? "bg-balance text-white"
               : darkMode

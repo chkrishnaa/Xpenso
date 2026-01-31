@@ -12,8 +12,8 @@ const ToggleMode = () => {
       className={`w-10 h-6 flex items-center rounded-full p-1 transition-colors duration-300
         ${
           darkMode
-            ? "bg-gradient-to-r from-purple-700 to-blue-700"
-            : "bg-gradient-to-r from-purple-600 to-blue-600"
+            ? "bg-gradient-to-r from-green-400 to-green-700"
+            : "bg-gradient-to-r from-blue-600 to-blue-300"
         }`}
     >
       <div
@@ -23,9 +23,9 @@ const ToggleMode = () => {
           } flex items-center justify-center`}
       >
         {darkMode ? (
-          <FaSun className="text-blue-700 w-3 h-3" />
+          <FaSun className="text-green-500 w-3 h-3" />
         ) : (
-          <FaMoon className="text-purple-700 w-3 h-3" />
+          <FaMoon className="text-blue-500 w-3 h-3" />
         )}
       </div>
     </button>

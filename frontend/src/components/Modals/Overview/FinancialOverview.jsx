@@ -44,7 +44,7 @@ const FinancialOverview = ({ totalBalance, totalIncome, totalExpense }) => {
 
   return (
     <div
-      className={`px-2 py-6 mob:px-6 rounded-none mob:rounded-xl sm:rounded-2xl border-b mob:border transition-colors duration-300 bg-gradient-to-b shadow-none mob:shadow-lg
+      className={`px-2 py-6 mob:px-6 rounded-none mob:rounded-xl sm:rounded-2xl border-t mob:border transition-colors duration-300 bg-gradient-to-b shadow-none mob:shadow-lg
         ${
           darkMode
             ? "from-gray-950 via-gray-950 to-gray-900 border-gray-600 shadow-gray-500/30"

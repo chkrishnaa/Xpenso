@@ -51,7 +51,7 @@ const Dashboard = () => {
 
   return (
     <DashboardLayout activeMenu="dashboard">
-      <div className="my-5 mx-auto">
+      <div className="my-0 mob:my-5 mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mob:gap-5 mx-3 mob:mx-0">
           <InfoCard
             icon={<IoMdCard />}

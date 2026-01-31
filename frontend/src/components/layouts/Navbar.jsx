@@ -64,7 +64,7 @@ const Navbar = ({ activeMenu }) => {
 
         <button
           onClick={() => navigate("/")}
-          className="hidden sm:flex items-center gap-3 sm:block"
+          className="hidden lg:flex items-center gap-3"
         >
           <div
             className={`w-9 h-9 rounded-lg flex items-center justify-center shadow-sm ${
@@ -97,7 +97,7 @@ const Navbar = ({ activeMenu }) => {
 
       {/* RIGHT */}
       <div className="flex-1 flex items-center justify-between">
-        <div className="hidden lg:block">
+        <div className="hidden sm:block">
           <p
             className={`font-bold ${
               darkMode ? "text-gray-200" : "text-gray-800"
