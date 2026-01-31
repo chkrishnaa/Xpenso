@@ -179,7 +179,7 @@ const ResetPassword = () => {
       {step === 1 && (
         <form
           onSubmit={sendOtp}
-          className={`space-y-4 w-full max-w-md p-8 rounded-2xl shadow-xl
+          className={`space-y-2 mob:space-y-4 w-full max-w-md p-5 mob:p-8 rounded-2xl shadow-xl
           bg-gradient-to-br z-20
           ${
             darkMode
@@ -197,7 +197,7 @@ const ResetPassword = () => {
             </h2>
 
             <p
-              className={`text-sm text-center ${
+              className={`mt-0 mob:mt-2 text-sm text-center ${
                 darkMode ? "text-gray-400" : "text-gray-500"
               }`}
             >
@@ -243,7 +243,7 @@ const ResetPassword = () => {
       {step === 2 && (
         <form
           onSubmit={submitOtp}
-          className={`relative space-y-4 w-full max-w-md p-8 rounded-2xl shadow-xl
+          className={`relative space-y-2 mob:space-y-4 w-full max-w-md p-5 mob:p-8 rounded-2xl shadow-xl
     bg-gradient-to-br z-20
     ${
       darkMode
@@ -261,7 +261,7 @@ const ResetPassword = () => {
               Verify OTP
             </h2>
             <p
-              className={`mt-2 text-sm text-center ${
+              className={`mt-0 mob:mt-2 text-sm text-center ${
                 darkMode ? "text-gray-400" : "text-gray-500"
               }`}
             >
@@ -338,7 +338,7 @@ const ResetPassword = () => {
       {step === 3 && (
         <form
           onSubmit={resetPassword}
-          className={`space-y-4 w-full max-w-md p-8 rounded-2xl shadow-xl
+          className={`space-y-2 mob:space-y-4 w-full max-w-md p-5 mob:p-8 rounded-2xl shadow-xl
           bg-gradient-to-br z-20
           ${
             darkMode
@@ -346,13 +346,22 @@ const ResetPassword = () => {
               : "from-green-50 via-green-100 to-green-50"
           }`}
         >
-          <h2
-            className={`text-2xl font-bold text-center ${
-              darkMode ? "text-gray-200" : "text-gray-800"
-            }`}
-          >
-            Set New Password
-          </h2>
+          <div>
+            <h2
+              className={`text-2xl font-bold text-center ${
+                darkMode ? "text-gray-200" : "text-gray-800"
+              }`}
+            >
+              Set New Password
+            </h2>
+            <p
+              className={`mt-0 mob:mt-2 text-sm text-center ${
+                darkMode ? "text-gray-400" : "text-gray-500"
+              }`}
+            >
+              Enter a new password for your account.
+            </p>
+          </div>
 
           <Input
             label="New Password"

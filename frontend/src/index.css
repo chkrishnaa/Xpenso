@@ -3,6 +3,8 @@
 
 @theme {
     --font-display: 'Ubuntu', sans-serif;
+
+    --breakpoint-mob: 400px;
     --breakpoint-3xl: 1920px;
     --color-primary: #875cf5;
 

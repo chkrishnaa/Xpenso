@@ -34,7 +34,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-6 py-14">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {/* Left: Logo + Socials */}
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-5 items-center mob:items-start text-center mob:text-left">
             <Link to="/" className="flex items-center gap-3">
               <div
                 className={`w-9 h-9 rounded-lg flex items-center justify-center shadow-sm ${
@@ -113,18 +113,18 @@ const Footer = () => {
           </div>
 
           {/* Right: Links */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
+          <div className="grid grid-cols-2 gap-10">
             {/* Policies */}
             <div>
               <h4
-                className={`font-semibold mb-4 ${
+                className={`font-semibold mb-4 pl-4 ${
                   darkMode ? "text-white" : "text-gray-900"
                 }`}
               >
                 Legal & Policies
               </h4>
               <ul
-                className={`space-y-3 text-sm ${
+                className={`space-y-3 text-sm pl-4 ${
                   darkMode ? "text-gray-400" : "text-gray-600"
                 }`}
               >
@@ -174,14 +174,14 @@ const Footer = () => {
             {/* Navigation */}
             <div>
               <h4
-                className={`font-semibold mb-4 ${
+                className={`font-semibold mb-4 pl-4 ${
                   darkMode ? "text-white" : "text-gray-900"
                 }`}
               >
                 Navigation
               </h4>
               <ul
-                className={`space-y-3 text-sm ${
+                className={`space-y-3 text-sm pl-4 ${
                   darkMode ? "text-gray-400" : "text-gray-600"
                 }`}
               >

@@ -141,7 +141,7 @@ const VerifyEmail = () => {
     >
       <form
         onSubmit={submitOtp}
-        className={`space-y-4 w-full max-w-md p-8 rounded-2xl shadow-xl
+        className={`space-y-2 mob:space-y-4 w-full max-w-md p-5 mob:p-8 rounded-2xl shadow-xl
         bg-gradient-to-br
         ${
           darkMode

@@ -24,7 +24,7 @@ const Input = ({
       <label
         className={`block text-sm font-medium ${
           darkMode ? "text-gray-200" : "text-gray-700"
-        } mb-2`}
+        } mb-1 mob:mb-2`}
       >
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
@@ -32,7 +32,7 @@ const Input = ({
 
       <div className="relative">
         {Icon && (
-          <Icon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+          <Icon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 mob:w-5 h-4 mob:h-5" />
         )}
 
         <input

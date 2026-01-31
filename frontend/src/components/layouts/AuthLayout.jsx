@@ -52,7 +52,7 @@ const AuthLayout = ({ children, side = "left" }) => {
         {isFormLeft && (
           <motion.div
             key="form-left"
-            className="flex flex-1 justify-center items-center px-12 pt-8 pb-12"
+            className="flex flex-1 justify-center items-center px-4 mob:px-12 pt-8 pb-12"
             custom="left"
             variants={formVariants}
             initial="hidden"
@@ -80,7 +80,7 @@ const AuthLayout = ({ children, side = "left" }) => {
         {!isFormLeft && (
           <motion.div
             key="form-right"
-            className="flex flex-1 justify-center items-center px-12 pt-8 pb-12"
+            className="flex flex-1 justify-center items-center px-4 mob:px-12 pt-8 pb-12"
             custom="right"
             variants={formVariants}
             initial="hidden"

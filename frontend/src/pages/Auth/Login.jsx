@@ -97,7 +97,7 @@ const Login = () => {
     <AuthLayout side="left">
       <div
         className={`
-        w-full max-w-md p-8 rounded-2xl
+        w-full max-w-md p-5 mob:p-8 rounded-2xl
         bg-gradient-to-br
         ${
           darkMode
@@ -116,13 +116,13 @@ const Login = () => {
           >
             Welcome back
           </h2>
-          <p className={`${darkMode ? "text-gray-400" : "text-gray-500"}`}>
+          <p className={`${darkMode ? "text-gray-400" : "text-gray-500"} text-sm sm:text-base`}>
             Login to continue to JobiFy
           </p>
         </div>
 
         {/* Form */}
-        <form className="space-y-4" onSubmit={handleLogin}>
+        <form className="space-y-2 mob:space-y-4" onSubmit={handleLogin}>
           <Input
             label="Email Address"
             type="email"

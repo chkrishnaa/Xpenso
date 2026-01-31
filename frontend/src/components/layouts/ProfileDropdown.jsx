@@ -29,8 +29,8 @@ const ProfileDropdown = ({
   return (
     <div className="relative">
       <button
-        className={`flex items-center space-x-3 p-2 rounded-xl ${
-          darkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"
+        className={`flex items-center space-x-3 p-2 rounded-xl border ${
+          darkMode ? "hover:bg-gray-700 border-gray-800" : "hover:bg-gray-200 border-gray-300"
         } transition-colors duration-300`}
         onClick={onToggle}
       >

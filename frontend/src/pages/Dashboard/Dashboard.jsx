@@ -52,7 +52,7 @@ const Dashboard = () => {
   return (
     <DashboardLayout activeMenu="dashboard">
       <div className="my-5 mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mob:gap-5">
           <InfoCard
             icon={<IoMdCard />}
             label="Total Balance"

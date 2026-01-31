@@ -11,6 +11,8 @@ import {
   Cell,
 } from "recharts";
 import { useTheme } from "../../context/ThemeContext";
+import { formatNumber } from "../../utils/helper";
+import {useWindowWidth} from "../../hooks/useWindowWidth";
 
 /* ================= HELPERS ================= */
 
@@ -35,7 +37,6 @@ const buildIndividualCumulativeData = (transactions) => {
     });
 };
 
-// AGGREGATED – 3 grouped blocks per day
 const buildAggregatedBlocks = (transactions) => {
   const map = {};
 
@@ -93,10 +94,36 @@ const buildTotalAggregate = (transactions) => {
   ];
 };
 
+const CustomYAxisTick = ({ x, y, payload }) => {
+  let color = "#3B82F6"; // balance (0)
+
+  if (payload.value > 0) color = "#16A34A"; // income
+  if (payload.value < 0) color = "#EF4444"; // expense
+
+  return (
+    <text
+      x={x - 4} // 👈 pulls text closer, uses free space
+      y={y}
+      textAnchor="end"
+      dominantBaseline="middle"
+      fill={color}
+      fontSize={10} // 👈 SMALL text (mobile safe)
+      fontWeight={500}
+    >
+      {formatNumber(Math.abs(payload.value))}
+    </text>
+  );
+};
 
 /* ================= COMPONENT ================= */
 
 const CumulativeIncomeExpenseChart = ({ transactions }) => {
+  const windowWidth = useWindowWidth();
+  const chartHeight = windowWidth > 400 ? 400 : 300;
+  const isMobile = windowWidth <= 400;
+  const axisFontSize = isMobile ? 10 : 12;
+
+
   const [mode, setMode] = useState("individual");
   const { darkMode } = useTheme();
 
@@ -115,21 +142,29 @@ const CumulativeIncomeExpenseChart = ({ transactions }) => {
     [transactions]
   );
 
+  const IndividualBarCount = individualData.length;
+  const AggregatedDataBlockCount = aggregatedDataBlocks.length;
+
+  const IndividualBarRadius = IndividualBarCount > 10 ? 0 : [6, 6, 6, 6];
+  const AggregatedDataBlockRadius = AggregatedDataBlockCount > 10 ? 0 : [6, 6, 0, 0];
+
+    
+
   const axisColor = darkMode ? "#9CA3AF" : "#4B5563";
   const gridColor = darkMode ? "#374151" : "#E5E7EB";
 
   return (
     <div
-      className={`p-6 rounded-2xl border transition-colors duration-300
+      className={`p-4 mob:p-6 rounded-2xl border transition-colors duration-300bg-gradient-to-br
         ${
           darkMode
-            ? "bg-gray-900/80 border-gray-700"
-            : "bg-white border-gray-200/50 shadow-md"
+            ? "from-gray-950 via-gray-900 to-gray-950 border-gray-700/50 shadow-lg shadow-gray-500/30"
+            : "from-blue-50 via-blue-100 to-blue-50 border-gray-200/50 shadow-md shadow-gray-500/30"
         }
       `}
     >
       {/* Header + switch */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-8">
         <h5
           className={`text-lg font-medium ${
             darkMode ? "text-gray-100" : "text-gray-900"
@@ -138,20 +173,21 @@ const CumulativeIncomeExpenseChart = ({ transactions }) => {
           Income vs Expense (Last 30 Days)
         </h5>
 
-        <div
-          className={`flex rounded-md overflow-hidden border-2 ${
-            darkMode ? "border-green-500" : "border-green-600"
-          }`}
-        >
-          {[
-            ["individual", "Individual"],
-            ["aggregated-blocks", "Aggregate Blocks"],
-            ["aggregate-total", "Aggregate Total"],
-          ].map(([key, label], i) => (
-            <button
-              key={key}
-              onClick={() => setMode(key)}
-              className={`px-3 py-1 text-sm transition
+        <div className="flex w-full sm:w-auto justify-end">
+          <div
+            className={`flex rounded-md overflow-hidden border-2 ${
+              darkMode ? "border-green-500" : "border-green-600"
+            }`}
+          >
+            {[
+              ["individual", "Individual"],
+              ["aggregated-blocks", "Aggregate Blocks"],
+              ["aggregate-total", "Aggregate Total"],
+            ].map(([key, label], i) => (
+              <button
+                key={key}
+                onClick={() => setMode(key)}
+                className={`px-3 py-1 text-xs mob:text-sm transition
                 ${
                   mode === key
                     ? "bg-green-600 text-white"
@@ -159,19 +195,27 @@ const CumulativeIncomeExpenseChart = ({ transactions }) => {
                     ? "bg-gray-800 text-gray-300 hover:bg-gray-700"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
-            >
-              {label}
-            </button>
-          ))}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      <ResponsiveContainer width="100%" height={400}>
+      <ResponsiveContainer width="100%" height={chartHeight}>
         {mode === "individual" && (
           <BarChart data={individualData}>
             <CartesianGrid vertical={false} stroke={gridColor} />
-            <XAxis dataKey="label" stroke={axisColor} />
-            <YAxis stroke={axisColor} />
+            <XAxis dataKey="label" stroke={axisColor} tick={{ fontSize: axisFontSize}} />
+            <YAxis
+              tick={<CustomYAxisTick />}
+              axisLine={{ stroke: axisColor }}
+              tickLine={false}
+              // tick={{ fontSize: axisFontSize }}
+              width={48} // 👈 IMPORTANT: prevents extra empty space
+            />
+
             <Tooltip
               contentStyle={{
                 backgroundColor: darkMode ? "#111827" : "#ffffff",
@@ -182,7 +226,7 @@ const CumulativeIncomeExpenseChart = ({ transactions }) => {
             <ReferenceLine y={0} stroke="#3B82F6" />
 
             <Bar dataKey="base" stackId="a" fill="transparent" />
-            <Bar dataKey="value" stackId="a">
+            <Bar dataKey="value" stackId="a" radius={IndividualBarRadius}>
               {individualData.map((e, i) => (
                 <Cell key={i} fill={e.color} />
               ))}
@@ -193,8 +237,13 @@ const CumulativeIncomeExpenseChart = ({ transactions }) => {
         {mode === "aggregated-blocks" && (
           <BarChart data={aggregatedDataBlocks} barGap={0}>
             <CartesianGrid vertical={false} stroke={gridColor} />
-            <XAxis dataKey="date" stroke={axisColor} />
-            <YAxis stroke={axisColor} />
+            <XAxis dataKey="date" stroke={axisColor} tick={{ fontSize: 10 }} />
+            <YAxis
+              tick={<CustomYAxisTick />}
+              axisLine={{ stroke: axisColor }}
+              tickLine={false}
+              width={48} // 👈 IMPORTANT: prevents extra empty space
+            />
             <Tooltip
               contentStyle={{
                 backgroundColor: darkMode ? "#111827" : "#ffffff",
@@ -203,9 +252,17 @@ const CumulativeIncomeExpenseChart = ({ transactions }) => {
             />
             <ReferenceLine y={0} stroke="#3B82F6" />
 
-            <Bar dataKey="income" fill="#16A34A" />
-            <Bar dataKey="expense" fill="#EF4444" />
-            <Bar dataKey="balance">
+            <Bar
+              dataKey="income"
+              fill="#16A34A"
+              radius={AggregatedDataBlockRadius}
+            />
+            <Bar
+              dataKey="expense"
+              fill="#EF4444"
+              radius={AggregatedDataBlockRadius}
+            />
+            <Bar dataKey="balance" radius={AggregatedDataBlockRadius}>
               {aggregatedDataBlocks.map((e, i) => (
                 <Cell
                   key={i}
@@ -218,9 +275,18 @@ const CumulativeIncomeExpenseChart = ({ transactions }) => {
 
         {mode === "aggregate-total" && (
           <BarChart data={aggregatedData} barGap={0}>
-            <CartesianGrid vertical={false} stroke={gridColor} />
-            <XAxis dataKey="label" stroke={axisColor} />
-            <YAxis stroke={axisColor} />
+            <CartesianGrid
+              vertical={false}
+              stroke={gridColor}
+              tick={{ fontSize: 10 }}
+            />
+            <XAxis dataKey="label" stroke={axisColor} tick={{ fontSize: 10 }} />
+            <YAxis
+              tick={<CustomYAxisTick />}
+              axisLine={{ stroke: axisColor }}
+              tickLine={false}
+              width={48} // 👈 IMPORTANT: prevents extra empty space
+            />
             <Tooltip
               contentStyle={{
                 backgroundColor: darkMode ? "#111827" : "#ffffff",
@@ -229,9 +295,9 @@ const CumulativeIncomeExpenseChart = ({ transactions }) => {
             />
             <ReferenceLine y={0} stroke="#3B82F6" />
 
-            <Bar dataKey="income" fill="#16A34A" />
-            <Bar dataKey="expense" fill="#EF4444" />
-            <Bar dataKey="balance">
+            <Bar dataKey="income" fill="#16A34A" radius={[6, 6, 0, 0]} />
+            <Bar dataKey="expense" fill="#EF4444" radius={[6, 6, 0, 0]} />
+            <Bar dataKey="balance" radius={[6, 6, 0, 0]}>
               {aggregatedData.map((e, i) => (
                 <Cell
                   key={i}

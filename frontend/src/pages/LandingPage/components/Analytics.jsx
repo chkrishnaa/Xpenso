@@ -117,9 +117,8 @@ const Analytics = () => {
           </h2>
 
           <p
-            className={`text-lg ${
-              darkMode ? "text-gray-300" : "text-gray-600"
-            }`}
+            className={`text-md mob:text-lg sm:text-xl max-w-2xl mx-auto lg:mx-0
+ ${darkMode ? "text-gray-300" : "text-gray-600"}`}
           >
             Understand your money flow with clear insights, real-time balance,
             and meaningful financial indicators.
@@ -127,7 +126,7 @@ const Analytics = () => {
         </motion.div>
 
         {/* KPI CARDS */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mob:gap-8 mb-16">
           {ANALYTICS.map((item, index) => {
             const Icon = item.icon;
             return (
@@ -137,7 +136,7 @@ const Analytics = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
                 viewport={{ once: true }}
-                className={`p-6 rounded-2xl border backdrop-blur-sm transition-all
+                className={`p-6 rounded-xl mob:rounded-2xl border backdrop-blur-sm transition-all
                   hover:-translate-y-1 hover:shadow-lg
                   bg-gradient-to-br
                   ${
@@ -148,10 +147,10 @@ const Analytics = () => {
                 `}
               >
                 <div
-                  className={`w-12 h-12 bg-gradient-to-br ${item.iconBg}
-                    rounded-xl flex items-center justify-center mb-4`}
+                  className={`w-10 mob:w-12 h-10 mob:h-12 bg-gradient-to-br ${item.iconBg}
+                    rounded-lg mob:rounded-xl flex items-center justify-center mb-2 mob:mb-4`}
                 >
-                  <Icon className={`w-6 h-6 ${item.iconColor}`} />
+                  <Icon className={`w-5 mob:w-6 h-5 mob:h-6 ${item.iconColor}`} />
                 </div>
 
                 <div
@@ -163,7 +162,7 @@ const Analytics = () => {
                 </div>
 
                 <div
-                  className={`text-sm ${
+                  className={`text-sm mob:text-base ${
                     darkMode ? "text-gray-400" : "text-gray-600"
                   }`}
                 >
@@ -175,7 +174,7 @@ const Analytics = () => {
         </div>
 
         {/* INSIGHTS */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mob:gap-8">
           {INSIGHTS.map((insight, index) => {
             const Icon = insight.icon;
             return (
@@ -185,43 +184,46 @@ const Analytics = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.15, duration: 0.5 }}
                 viewport={{ once: true }}
-                className={`p-6 rounded-2xl border backdrop-blur-sm flex items-center gap-6
-                  hover:-translate-y-1 hover:shadow-lg transition-all
-                  bg-gradient-to-br
-                  ${
-                    darkMode
-                      ? "from-gray-950 via-gray-900 to-gray-950 border-gray-800"
-                      : "from-gray-100 via-white to-gray-100 border-gray-200"
-                  }
-                `}
+                className={`p-6 rounded-xl mob:rounded-2xl border backdrop-blur-sm
+    hover:-translate-y-1 hover:shadow-lg transition-all
+    bg-gradient-to-br
+    ${
+      darkMode
+        ? "from-gray-950 via-gray-900 to-gray-950 border-gray-800"
+        : "from-gray-100 via-white to-gray-100 border-gray-200"
+    }
+  `}
               >
-                <div
-                  className={`w-14 h-14 bg-gradient-to-br ${insight.iconBg}
-                    rounded-xl flex items-center justify-center`}
+                {/* 🔝 Top row: icon + value */}
+                <div className="flex items-center justify-between mb-4">
+                  <div
+                    className={`w-10 mob:w-14 h-10 mob:h-14 bg-gradient-to-br ${insight.iconBg}
+        rounded-lg mob:rounded-xl flex items-center justify-center`}
+                  >
+                    <Icon className={`w-5 mob:w-6 h-5 mob:h-6 ${insight.iconColor}`} />
+                  </div>
+
+                  <div className={`text-2xl font-bold ${insight.iconColor}`}>
+                    {insight.value}
+                  </div>
+                </div>
+
+                {/* 📝 Title + description */}
+                <h4
+                  className={`text-xl font-semibold mb-1 ${
+                    darkMode ? "text-white" : "text-gray-900"
+                  }`}
                 >
-                  <Icon className={`w-6 h-6 ${insight.iconColor}`} />
-                </div>
+                  {insight.title}
+                </h4>
 
-                <div className="flex-1">
-                  <h4
-                    className={`text-lg font-semibold mb-1 ${
-                      darkMode ? "text-white" : "text-gray-900"
-                    }`}
-                  >
-                    {insight.title}
-                  </h4>
-                  <p
-                    className={`text-sm ${
-                      darkMode ? "text-gray-400" : "text-gray-600"
-                    }`}
-                  >
-                    {insight.description}
-                  </p>
-                </div>
-
-                <div className={`text-2xl font-bold ${insight.iconColor}`}>
-                  {insight.value}
-                </div>
+                <p
+                  className={`text-sm mob:text-base ${
+                    darkMode ? "text-gray-400" : "text-gray-600"
+                  }`}
+                >
+                  {insight.description}
+                </p>
               </motion.div>
             );
           })}

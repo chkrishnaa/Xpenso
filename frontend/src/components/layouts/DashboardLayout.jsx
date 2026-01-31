@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import { UserContext } from "../../context/UserContext";
+import React from "react";
 import Navbar from "./Navbar";
 import SideMenu from "./SideMenu";
 import { useTheme } from "../../context/ThemeContext";
@@ -26,7 +25,7 @@ const DashboardLayout = ({ children, activeMenu }) => {
           }
           `}
         >
-          <div className="mx-5">{children}</div>
+          <div className="mx-3 sm:mx-5">{children}</div>
         </div>{" "}
       </div>
     </div>

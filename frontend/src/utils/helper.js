@@ -77,6 +77,45 @@ export const addThousandsSeperator = (num) => {
   : formattedIntegerPart;
 };
 
+export const formatNumber=(value)=> {
+  if (value < 1000) return String(value);
+
+  const units = [
+    { value: 1e12, symbol: "T" },
+    { value: 1e9, symbol: "B" },
+    { value: 1e6, symbol: "M" },
+    { value: 1e3, symbol: "K" },
+  ];
+
+  for (const unit of units) {
+    if (value >= unit.value * 0.5) {
+      const raw = value / unit.value;
+      const rounded = Number(raw.toFixed(2));
+
+      // Approximation (e.g. 999 → ~1K)
+      if (value < unit.value && rounded >= 1) {
+        return `~1${unit.symbol}`;
+      }
+
+      // Exact boundary (1000 → 1K, 100000 → 0.1M)
+      if (Number.isInteger(raw)) {
+        return `${raw}${unit.symbol}`;
+      }
+
+      // Exact decimal like 0.1M
+      if ((raw * 10) % 1 === 0) {
+        return `${raw}${unit.symbol}`;
+      }
+
+      // Above boundary → +
+      return `${rounded}${unit.symbol}+`;
+    }
+  }
+
+  return String(value);
+}
+
+
 export const formatTime = (sec) => {
   const m = Math.floor(sec / 60);
   const s = sec % 60;

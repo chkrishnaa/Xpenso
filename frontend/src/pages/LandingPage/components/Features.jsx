@@ -97,7 +97,6 @@ const Features = () => {
         />
       </div>
 
-
       <div className="relative z-10 max-w-7xl mx-auto px-4">
         {/* HEADER */}
         <motion.div
@@ -105,10 +104,10 @@ const Features = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
           viewport={{ once: true }}
-          className="text-center max-w-3xl mx-auto mb-16"
+          className="text-center max-w-3xl mx-auto mb-8 mob:mb-16"
         >
           <h2
-            className={`text-4xl md:text-5xl font-bold mb-6 ${
+            className={`text-4xl sm:text-5xl md:text-6xl font-bold ${
               darkMode ? "text-white" : "text-gray-900"
             }`}
           >
@@ -119,9 +118,8 @@ const Features = () => {
           </h2>
 
           <p
-            className={`text-lg ${
-              darkMode ? "text-gray-300" : "text-gray-600"
-            }`}
+            className={`text-md mob:text-lg sm:text-xl max-w-2xl mx-auto lg:mx-0
+ ${darkMode ? "text-gray-300" : "text-gray-600"}`}
           >
             Xpenso gives you complete control over your finances with simple
             tools, clear insights, and powerful analytics.
@@ -129,7 +127,7 @@ const Features = () => {
         </motion.div>
 
         {/* FEATURES GRID */}
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-3 mob:gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {FEATURES.map((feature, index) => {
             const Icon = feature.icon;
             return (
@@ -139,7 +137,7 @@ const Features = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
                 viewport={{ once: true }}
-                className={`p-6 rounded-2xl border backdrop-blur-sm transition-all
+                className={`p-6 rounded-xl mob:rounded-2xl border backdrop-blur-sm transition-all
                   hover:-translate-y-1 hover:shadow-lg
                   bg-gradient-to-br
                   ${
@@ -151,14 +149,16 @@ const Features = () => {
               >
                 {/* ICON */}
                 <div
-                  className={`w-12 h-12 bg-gradient-to-br ${feature.iconBg}
-                    rounded-xl flex items-center justify-center mb-4`}
+                  className={`w-10 mob:w-12 h-10 mob:h-12 bg-gradient-to-br ${feature.iconBg}
+                    rounded-lg mob:rounded-xl flex items-center justify-center mb-2 mob:mb-4`}
                 >
-                  <Icon className={`w-6 h-6 ${feature.iconColor}`} />
+                  <Icon
+                    className={`w-5 mob:w-6 h-5 mob:h-6 ${feature.iconColor}`}
+                  />
                 </div>
 
                 <h3
-                  className={`text-xl font-semibold mb-2 ${
+                  className={`text-xl font-semibold mb-1 mob:mb-2 ${
                     darkMode ? "text-white" : "text-gray-900"
                   }`}
                 >
@@ -166,7 +166,7 @@ const Features = () => {
                 </h3>
 
                 <p
-                  className={`leading-relaxed ${
+                  className={`leading-relaxed text-sm mob:text-base text-justify ${
                     darkMode ? "text-gray-400" : "text-gray-600"
                   }`}
                 >

@@ -90,7 +90,7 @@ const Hero = () => {
           src={`/assets/HeroSectionImages/STK1-${
             darkMode ? "dark" : "light"
           }.png`}
-          className="absolute -top-10 left-1/2 -translate-x-1/2 w-[260px] sm:w-[400px] lg:w-[500px] z-[2]"
+          className="absolute -top-10 left-1/2 -translate-x-1/2 w-[320px] sm:w-[400px] lg:w-[500px] z-[2]"
           style={{
             x: useTransform(mouseX, [-200, 200], [-20, 20]),
             y: useTransform(mouseY, [-200, 200], [-20, 20]),
@@ -104,7 +104,7 @@ const Hero = () => {
           src={`/assets/HeroSectionImages/STK2-${
             darkMode ? "dark" : "light"
           }.png`}
-          className="absolute top-10 left-2/3 -translate-x-1/2 w-[200px] sm:w-[240px] lg:w-[300px] z-[3]"
+          className="absolute top-10 right-1/4 mob:left-2/3 translate-x-1/2 mob:-translate-x-1/2 w-[180px] sm:w-[240px] lg:w-[300px] z-[3]"
           style={{
             x: useTransform(mouseX, [-200, 200], [-35, 35]),
             y: useTransform(mouseY, [-200, 200], [-35, 35]),
@@ -118,7 +118,7 @@ const Hero = () => {
           src={`/assets/HeroSectionImages/STK3-${
             darkMode ? "dark" : "light"
           }.png`}
-          className="absolute top-30 left-1/3 -translate-x-1/2 w-[280px] sm:w-[360px] lg:w-[400px] z-[1]"
+          className="absolute top-40 mob:top-30 right-[25px] mob:left-1/3 mob:-translate-x-1/2 w-[280px] sm:w-[360px] lg:w-[400px] z-[1]"
           style={{
             x: useTransform(mouseX, [-200, 200], [-50, 50]),
             y: useTransform(mouseY, [-200, 200], [-50, 50]),
@@ -181,17 +181,17 @@ const Hero = () => {
       <div className="max-w-7xl mx-auto px-4 w-full relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* ================= LEFT CONTENT ================= */}
-          <div className="relative space-y-8 text-center lg:text-left">
+          <div className="relative space-y-6 sm:space-y-6 mob:space-y-8 text-center lg:text-left">
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className={`text-4xl md:text-6xl font-bold ${
+              className={`text-4xl sm:text-5xl md:text-6xl font-bold ${
                 darkMode ? "text-white" : "text-gray-900"
               }`}
             >
               Take control of your{" "}
-              <span className="block mt-2 bg-gradient-to-r from-blue-500 via-green-400 to-blue-500 bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-blue-500 via-green-400 to-blue-500 bg-clip-text text-transparent">
                 income & expenses
               </span>
             </motion.h1>
@@ -200,7 +200,7 @@ const Hero = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8 }}
-              className={`text-lg sm:text-xl max-w-2xl mx-auto lg:mx-0
+              className={`text-md mob:text-lg sm:text-xl max-w-2xl mx-auto lg:mx-0
  ${darkMode ? "text-gray-300" : "text-gray-600"}`}
             >
               Xpenso helps you track income, manage expenses, and understand
@@ -217,14 +217,13 @@ const Hero = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center
-"
+              className="flex flex-row gap-2 mob:gap-4 justify-center lg:justify-start items-center"
             >
               <motion.button
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
                 onClick={() => navigate("/signup")}
-                className={`flex items-center gap-2 px-8 py-4 rounded-xl text-lg font-semibold text-white shadow-lg bg-gradient-to-r ${
+                className={`flex items-center gap-2 px-4 mob:px-8 py-3 mob:py-4 rounded-lg mob:rounded-xl text-base mob:text-lg font-semibold text-white shadow-lg bg-gradient-to-r ${
                   darkMode
                     ? "from-green-500 to-blue-500"
                     : "from-green-400 to-blue-400"
@@ -238,7 +237,7 @@ const Hero = () => {
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
                 onClick={() => navigate("/features")}
-                className={`px-8 py-4 rounded-xl text-lg font-semibold border-2 ${
+                className={`px-4 mob:px-8 py-3 mob:py-4 rounded-lg mob:rounded-xl text-base mob:text-lg font-semibold border-2 ${
                   darkMode
                     ? "border-blue-400 text-blue-400 hover:bg-blue-800/20"
                     : "border-blue-300 text-blue-700 hover:bg-blue-500/10"
@@ -249,7 +248,7 @@ const Hero = () => {
             </motion.div>
 
             {/* STATS */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 w-full">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mob:gap-8 w-full">
               {stats.map((stat, index) => {
                 const Icon = stat.icon;
                 return (
@@ -258,7 +257,7 @@ const Hero = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.6 + index * 0.1 }}
-                    className={`p-4 rounded-2xl backdrop-blur-sm transition flex flex-col items-center bg-gradient-to-br ${
+                    className={`p-4 rounded-lg mob:rounded-2xl backdrop-blur-sm transition flex flex-col items-center bg-gradient-to-br ${
                       darkMode
                         ? "from-gray-950 via-gray-900 to-gray-950"
                         : "from-gray-100 via-white to-gray-100"

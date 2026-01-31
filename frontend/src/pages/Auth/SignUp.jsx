@@ -109,7 +109,7 @@ const SignUp = () => {
     <AuthLayout side="right">
       <div
         className={`
-        w-full max-w-md p-8 rounded-2xl shadow-xl
+        w-full max-w-md p-5 mob:p-8 rounded-2xl shadow-xl
         bg-gradient-to-br
         ${
           darkMode
@@ -119,7 +119,7 @@ const SignUp = () => {
       `}
       >
         {/* Heading + Profile Photo */}
-        <div className="flex justify-between items-start mb-8">
+        <div className="flex justify-between items-start mb-0 mob:mb-8">
           <div>
             <h2
               className={`text-2xl font-bold ${
@@ -128,21 +128,27 @@ const SignUp = () => {
             >
               Create an account
             </h2>
-            <p className={`${darkMode ? "text-gray-400" : "text-gray-500"}`}>
+            <p
+              className={`${
+                darkMode ? "text-gray-400" : "text-gray-500"
+              } text-sm sm:text-base`}
+            >
               Join Xpenso to manage your finances
             </p>
           </div>
 
-          <ProfilePhoto
-            image={formData.image}
-            setImage={(file) =>
-              setFormData((prev) => ({ ...prev, image: file }))
-            }
-          />
+          <div className="scale-80 mob:scale-100">
+            <ProfilePhoto
+              image={formData.image}
+              setImage={(file) =>
+                setFormData((prev) => ({ ...prev, image: file }))
+              }
+            />
+          </div>
         </div>
 
         {/* Form */}
-        <form className="space-y-4" onSubmit={handleSignup}>
+        <form className="space-y-2 mob:space-y-4" onSubmit={handleSignup}>
           <Input
             label="Full Name"
             name="name"

@@ -36,16 +36,16 @@ const Navbar = ({ activeMenu }) => {
 
   return (
     <div
-      className={`flex gap-5 border-b sticky top-0 z-30 ${
+      className={`flex gap-5 border-b sticky top-0 z-30 backdrop-blur-md ${
         darkMode
-          ? "bg-gray-900 border-gray-700"
-          : "bg-gray-100 border-gray-300/50"
+          ? "bg-gray-950/90 border-gray-700"
+          : "bg-gray-100/80 border-gray-300/50"
       }`}
       style={{ height: `${NAVBAR_HEIGHT}px` }}
     >
       {/* LEFT */}
       <div
-        className={`flex items-center justify-center gap-5 py-3 px-7 lg:w-64 sm:border-r-0 lg:border-r  ${
+        className={`flex items-center justify-center gap-5 py-3 px-3 sm:px-7 lg:w-64 sm:border-r-0 lg:border-r  ${
           darkMode ? "border-gray-700" : "border-gray-300/50"
         }`}
       >
@@ -56,34 +56,34 @@ const Navbar = ({ activeMenu }) => {
           onClick={() => setOpenSideMenu((p) => !p)}
         >
           {openSideMenu ? (
-            <HiOutlineX size={24} />
+            <HiOutlineX className="h-5 mob:h-6 w-5 mob:w-6" />
           ) : (
-            <HiOutlineMenu size={24} />
+            <HiOutlineMenu className="h-5 mob:h-6 w-5 mob:w-6" />
           )}
         </button>
 
-          <button
-            onClick={() => navigate("/")}
-            className="hidden sm:flex items-center gap-3 sm:block"
+        <button
+          onClick={() => navigate("/")}
+          className="hidden sm:flex items-center gap-3 sm:block"
+        >
+          <div
+            className={`w-9 h-9 rounded-lg flex items-center justify-center shadow-sm ${
+              darkMode
+                ? "bg-gradient-to-br from-green-500 to-blue-500"
+                : "bg-gradient-to-br from-green-400 to-blue-400"
+            }`}
           >
-            <div
-              className={`w-9 h-9 rounded-lg flex items-center justify-center shadow-sm ${
-                darkMode
-                  ? "bg-gradient-to-br from-green-500 to-blue-500"
-                  : "bg-gradient-to-br from-green-400 to-blue-400"
-              }`}
-            >
-              <LuWalletMinimal className="w-5 h-5 text-white" />
-            </div>
+            <LuWalletMinimal className="w-5 h-5 text-white" />
+          </div>
 
-            <span
-              className={`text-3xl font-semibold tracking-tight ${
-                darkMode ? "text-white" : "text-gray-900"
-              }`}
-            >
-              Xpenso
-            </span>
-          </button>
+          <span
+            className={`text-3xl font-semibold tracking-tight ${
+              darkMode ? "text-white" : "text-gray-900"
+            }`}
+          >
+            Xpenso
+          </span>
+        </button>
 
         {openSideMenu && (
           <div
@@ -116,7 +116,7 @@ const Navbar = ({ activeMenu }) => {
 
         <div></div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 pr-3 sm:pr-5">
           {isLoggedIn ? (
             <ProfileDropdown
               isOpen={openProfile}

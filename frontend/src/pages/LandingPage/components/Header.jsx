@@ -19,16 +19,16 @@ const Header = () => {
       transition={{ duration: 0.5 }}
       className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b transition-colors duration-300 ${
         darkMode
-          ? "bg-gray-900/90 border-gray-800"
+          ? "bg-gray-950/90 border-gray-800"
           : "bg-white/80 border-gray-200"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4">
-        <div className="h-16 flex items-center justify-between">
+        <div className="h-14 mob:h-16 flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
             <div
-              className={`w-9 h-9 rounded-lg flex items-center justify-center shadow-sm ${
+              className={`w-8 h-8 mob:w-9 mob:h-9 rounded-md sm:rounded-lg flex items-center justify-center shadow-sm ${
                 darkMode
                   ? "bg-gradient-to-br from-green-500 to-blue-500"
                   : "bg-gradient-to-br from-green-400 to-blue-400"
@@ -38,7 +38,7 @@ const Header = () => {
             </div>
 
             <span
-              className={`text-3xl font-semibold tracking-tight ${
+              className={`hidden mob:block text-3xl font-semibold tracking-tight ${
                 darkMode ? "text-white" : "text-gray-900"
               }`}
             >
@@ -72,10 +72,10 @@ const Header = () => {
 
           {/* Actions */}
           <div className="flex items-center gap-3">
-            {IsLoggedIn ? (
+            {!IsLoggedIn ? (
               <Link
                 to="/dashboard"
-                className={`px-4 py-2 rounded-lg text-sm font-medium text-white transition shadow-sm ${
+                className={`px-4 py-2 rounded-md mob:rounded-lg text-sm font-medium text-white transition shadow-sm ${
                   darkMode
                     ? "bg-blue-700 hover:bg-blue-800"
                     : "bg-blue-600 hover:bg-blue-700"
@@ -87,7 +87,7 @@ const Header = () => {
               <>
                 <Link
                   to="/login"
-                  className={`px-3 py-2 rounded-lg text-sm font-medium transition ${
+                  className={`px-3 py-2 rounded-md mob:rounded-lg text-sm font-medium transition ${
                     darkMode
                       ? "text-gray-300 hover:bg-gray-800"
                       : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
@@ -98,7 +98,7 @@ const Header = () => {
 
                 <Link
                   to="/signup"
-                  className={`px-4 py-2 rounded-lg text-sm font-medium text-white transition shadow-sm ${
+                  className={`px-4 py-2 rounded-md mob:rounded-lg text-sm font-medium text-white transition shadow-sm ${
                     darkMode
                       ? "bg-green-700 hover:bg-green-800"
                       : "bg-green-600 hover:bg-green-700"
@@ -111,7 +111,9 @@ const Header = () => {
 
             {/* Theme Toggle */}
           </div>
-          <ToggleMode className="scale-75" />
+          <div className="scale-75 mob:scale-90 sm:scale-100">
+            <ToggleMode />
+          </div>
         </div>
       </div>
     </motion.header>
