@@ -12,7 +12,7 @@ const ToggleMode = () => {
       className={`w-10 h-6 flex items-center rounded-full p-1 transition-colors duration-300
         ${
           darkMode
-            ? "bg-gradient-to-r from-green-400 to-green-700"
+            ? "bg-gradient-to-r from-green-300 to-green-600"
             : "bg-gradient-to-r from-blue-600 to-blue-300"
         }`}
     >
