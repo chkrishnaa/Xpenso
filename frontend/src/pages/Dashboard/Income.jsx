@@ -140,8 +140,8 @@ const Income = () => {
 
   return (
     <DashboardLayout activeMenu="Income">
-      <div className="my-5 mx-auto">
-        <div className="grid grid-col-1 gap-6">
+      <div className="my-0 sm:my-5 mx-auto">
+        <div className="grid grid-col-1 gap-0 sm:gap-6">
           <div className="">
             <IncomeOverview
               transactions={incomeData}

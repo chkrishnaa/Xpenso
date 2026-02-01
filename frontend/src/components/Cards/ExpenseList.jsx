@@ -3,17 +3,18 @@ import { LuDownload, LuTrash2 } from "react-icons/lu";
 import TransactionInfoCard from "../Cards/TransactionInfoCard";
 import moment from "moment";
 import { useTheme } from "../../context/ThemeContext";
+import TransactionInfoTable from "./TransactionInfoTable";
 
 const ExpenseList = ({ ...props }) => {
   const { darkMode } = useTheme();
 
   return (
     <div
-      className={`p-6 rounded-2xl border transition-colors duration-300
+      className={`px-2 py-6 mob:px-6 rounded-none mob:rounded-xl sm:rounded-2xl border-b mob:border transition-colors duration-300 bg-gradient-to-b shadow-none mob:shadow-lg
         ${
           darkMode
-            ? "bg-gray-900/80 border-gray-700 shadow-lg shadow-black/30"
-            : "bg-white border-gray-200/50 shadow-md shadow-gray-100"
+            ? "from-gray-950 via-gray-950 to-gray-900 border-gray-600 shadow-gray-500/30"
+            : "from-blue-50 via-blue-50 to-blue-100 border-blue-300 shadow-gray-500/30"
         }
       `}
     >
@@ -52,11 +53,27 @@ const ExpenseList = ({ ...props }) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+      <div className="hidden mob:grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
         {[...props.transactions]
           ?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
           .map((expense) => (
             <TransactionInfoCard
+              key={expense._id}
+              title={expense.category}
+              icon={expense.icon}
+              amount={expense.amount}
+              date={moment(expense.date).format("Do MM YYYY")}
+              type="expense"
+              onDelete={() => props.onDelete(expense._id)}
+            />
+          ))}
+      </div>
+
+      <div className="grid grid-cols-1 gap-1 mt-8 mob:hidden">
+        {[...props.transactions]
+          ?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          .map((expense) => (
+            <TransactionInfoTable
               key={expense._id}
               title={expense.category}
               icon={expense.icon}

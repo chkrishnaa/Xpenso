@@ -9,7 +9,10 @@ import {
   CartesianGrid,
   ReferenceLine,
   Cell,
+  Label,
+  LabelList,
 } from "recharts";
+import moment from "moment";
 import { useTheme } from "../../context/ThemeContext";
 import { formatNumber } from "../../utils/helper";
 import {useWindowWidth} from "../../hooks/useWindowWidth";
@@ -60,7 +63,7 @@ const buildAggregatedBlocks = (transactions) => {
       const balance = d.income - d.expense;
 
       return {
-        date: d.date,
+        date: moment(d.date).format("Do MMM"),
         income: d.income,          // 🟢
         expense: -d.expense,       // 🔴
         balance: balance === 0 ? null : balance,
@@ -120,10 +123,11 @@ const CustomYAxisTick =
 /* ================= COMPONENT ================= */
 
 const CumulativeIncomeExpenseChart = ({ transactions }) => {
-  const windowWidth = useWindowWidth();
+const windowWidth = useWindowWidth() || window.innerWidth;
   const chartHeight = windowWidth > 400 ? 400 : 300;
-  const chartYAxisWidth = windowWidth > 400 ? 60 : 35;
+  const chartYAxisWidth = windowWidth > 400 ? 60 : 55;
   const isMobile = windowWidth <= 400;
+  
   const axisFontSize = isMobile ? 10 : 14;
 
 
@@ -214,13 +218,34 @@ const CumulativeIncomeExpenseChart = ({ transactions }) => {
               dataKey="label"
               stroke={axisColor}
               tick={{ fontSize: axisFontSize }}
-            />
+              
+            >
+              <Label
+                value="Transactions (Income/Expense)"
+                position="insideBottom"
+                dy={5}
+                fill="#3B82F6"
+                fontSize={axisFontSize}
+                fontWeight={600}
+              />
+            </XAxis>
             <YAxis
               tick={CustomYAxisTick(axisFontSize)}
               axisLine={{ stroke: axisColor }}
               tickLine={false}
               width={chartYAxisWidth} // 👈 IMPORTANT: prevents extra empty space
-            />
+              
+            >
+              <Label
+                value="Amount (Income/Expense)"
+                angle={-90}
+                position="insideLeft"
+                dy={chartHeight / 2 - 100} // 👈 centers vertically
+                fill="#3B82F6"
+                fontSize={axisFontSize}
+                fontWeight={600}
+              />
+            </YAxis>
 
             <Tooltip
               contentStyle={{
@@ -243,13 +268,43 @@ const CumulativeIncomeExpenseChart = ({ transactions }) => {
         {mode === "aggregated-blocks" && (
           <BarChart data={aggregatedDataBlocks} barGap={0}>
             <CartesianGrid vertical={false} stroke={gridColor} />
-            <XAxis dataKey="date" stroke={axisColor} tick={{ fontSize: 10 }} />
+            <XAxis
+              dataKey="date"
+              stroke={axisColor}
+              tick={{ fontSize: 10 }}
+              angle={-55}
+              tickMargin={15}
+              dy={5}
+              dx={-14}
+              height={60}
+              
+            >
+              <Label
+                value="Income vs Expense (For Single Day)"
+                position="insideBottom"
+                dy={5}
+                fill="#3B82F6"
+                fontSize={axisFontSize}
+                fontWeight={600}
+              />
+            </XAxis>
             <YAxis
               tick={CustomYAxisTick(axisFontSize)}
               axisLine={{ stroke: axisColor }}
               tickLine={false}
               width={chartYAxisWidth} // 👈 IMPORTANT: prevents extra empty space
-            />
+              
+            >
+              <Label
+                value="Amount (Income/Expense)"
+                angle={-90}
+                position="insideLeft"
+                dy={chartHeight / 2 - 100} // 👈 centers vertically
+                fill="#3B82F6"
+                fontSize={axisFontSize}
+                fontWeight={600}
+              />
+            </YAxis>
             <Tooltip
               contentStyle={{
                 backgroundColor: darkMode ? "#111827" : "#ffffff",
@@ -284,15 +339,33 @@ const CumulativeIncomeExpenseChart = ({ transactions }) => {
             <CartesianGrid
               vertical={false}
               stroke={gridColor}
-              tick={{ fontSize: 10 }}
             />
-            <XAxis dataKey="label" stroke={axisColor} tick={{ fontSize: 10 }} />
+            <XAxis stroke={axisColor} tick={{ fontSize: 10 }} fill="#3B82F6">
+              <Label
+                value="Grand Total for 1 Month"
+                position="insideBottom"
+                dy={5}
+                fill="#3B82F6"
+                fontSize={axisFontSize}
+                fontWeight={600}
+              />
+            </XAxis>
             <YAxis
               tick={CustomYAxisTick(axisFontSize)}
               axisLine={{ stroke: axisColor }}
               tickLine={false}
               width={chartYAxisWidth} // 👈 IMPORTANT: prevents extra empty space
-            />
+            >
+              <Label
+                value="Amount (Income/Expense)"
+                angle={-90}
+                position="insideLeft"
+                dy={chartHeight / 2 - 100} // 👈 centers vertically
+                fill="#3B82F6"
+                fontSize={axisFontSize}
+                fontWeight={600}
+              />
+            </YAxis>
             <Tooltip
               contentStyle={{
                 backgroundColor: darkMode ? "#111827" : "#ffffff",

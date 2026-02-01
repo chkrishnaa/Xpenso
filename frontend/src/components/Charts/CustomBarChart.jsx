@@ -8,6 +8,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   Cell,
+  Label,
 } from "recharts";
 import { truncateLabel } from "../../utils/helper";
 import { useTheme } from "../../context/ThemeContext";
@@ -15,23 +16,23 @@ import { formatNumber } from "../../utils/helper";
 import { useWindowWidth } from "../../hooks/useWindowWidth";
 
 const CustomYAxisTick =
-  (fontSize) =>
+  (fontSize, axisColor) =>
   ({ x, y, payload }) => {
-    
-
     return (
       <text
-        x={x - 4} // 👈 pulls text closer, uses free space
+        x={x - 4}
         y={y}
         textAnchor="end"
         dominantBaseline="middle"
-        fontSize={fontSize} // 👈 SMALL text (mobile safe)
+        fill={axisColor} // ✅ FIX: axis color
+        fontSize={fontSize}
         fontWeight={500}
       >
         {formatNumber(Math.abs(payload.value))}
       </text>
     );
   };
+
 
 const CustomBarChart = ({ data = [], type = "expense", xKey }) => {
   const { darkMode } = useTheme();
@@ -49,9 +50,15 @@ const CustomBarChart = ({ data = [], type = "expense", xKey }) => {
     return index % 2 === 0 ? "#16A34A" : "#4ADE80";
   };
 
-  const windowWidth = useWindowWidth();
+  const xAxisLabel =
+    type === "expense" ? "Expense Categories" : "Income Sources";
+
+  const yAxisLabel = type === "expense" ? "Expense Amount" : "Income Amount";
+
+
+const windowWidth = useWindowWidth() || window.innerWidth;
   const chartHeight = windowWidth > 400 ? 400 : 300;
-  const chartYAxisWidth = windowWidth > 400 ? 60 : 35;
+  const chartYAxisWidth = windowWidth > 400 ? 60 : 55;
   const isMobile = windowWidth <= 400;
   const axisFontSize = isMobile ? 10 : 14;
 
@@ -111,6 +118,10 @@ const CustomBarChart = ({ data = [], type = "expense", xKey }) => {
     return null;
   };
 
+  const barCount = data.length;
+  const barRadius = barCount > 10 ? 0 : [6, 6, 0, 0];
+
+
   // Hover background
   const hoverCursor = {
     fill: darkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)",
@@ -133,24 +144,45 @@ const CustomBarChart = ({ data = [], type = "expense", xKey }) => {
           stroke={axisColor}
           tick={{ fill: axisColor, fontSize: axisFontSize }}
           tickFormatter={(value) => truncateLabel(value.split(" ")[0], 10)}
-        />
+          
+        >
+          <Label
+            value={xAxisLabel}
+            offset={0}
+            position="insideBottom"
+            fill={axisColor}
+            fontSize={axisFontSize}
+            fontWeight={600}
+          />
+        </XAxis>
 
         {/* Y AXIS */}
         <YAxis
           allowDecimals={false}
           stroke={axisColor}
-          tick={CustomYAxisTick(axisFontSize)}
+          tick={CustomYAxisTick(axisFontSize, axisColor)}
+          width={chartYAxisWidth}
           fill={axisColor}
           tickLine={{ stroke: axisColor }}
           axisLine={{ stroke: axisColor }}
-          width={chartYAxisWidth}
-        />
+          
+        >
+          <Label
+            value={yAxisLabel}
+            angle={-90}
+            position="insideLeft"
+            dy={chartHeight / 2 - 100} // 👈 centers vertically
+            fill={axisColor}
+            fontSize={axisFontSize}
+            fontWeight={600}
+          />
+        </YAxis>
 
         {/* TOOLTIP */}
         <Tooltip content={<CustomTooltip />} cursor={hoverCursor} />
 
         {/* BARS */}
-        <Bar dataKey="amount">
+        <Bar dataKey="amount" radius={barRadius}>
           {data.map((_, index) => (
             <Cell key={index} fill={getBarColor(index)} />
           ))}
