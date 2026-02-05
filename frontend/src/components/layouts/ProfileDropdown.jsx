@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import { MdVerified } from "react-icons/md";
@@ -6,31 +6,47 @@ import ToggleMode from "../Utility/ToggleMode";
 import { useTheme } from "../../context/ThemeContext";
 import { UserContext } from "../../context/UserContext";
 
-const ProfileDropdown = ({
-  isOpen,
-  onToggle,
-  avatar,
-  email,
-  onLogout,
-}) => {
-    const { user, clearUser } = useContext(UserContext);
+const ProfileDropdown = ({ isOpen, onToggle, avatar, email, onLogout }) => {
+  const { user } = useContext(UserContext);
+  const dropdownRef = useRef(null);
+
 
   const { darkMode } = useTheme();
   const navigate = useNavigate();
 
-  // const handleProfileClick = () => {
-  //   navigate("/profile");
-  //   // Close dropdown by toggling it off
-  //   if (isOpen) {
-  //     onToggle({ stopPropagation: () => {} });
-  //   }
-  // };
+  const handleProfileClick = () => {
+    navigate("/profile");
+    // Close dropdown by toggling it off
+    if (isOpen) {
+      onToggle({ stopPropagation: () => {} });
+    }
+  };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        isOpen &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target)
+      ) {
+        onToggle(); // close dropdown
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen, onToggle]);
+
 
   return (
-    <div className="relative">
+    <div ref={dropdownRef} className="relative">
       <button
         className={`flex items-center space-x-3 p-2 rounded-xl border ${
-          darkMode ? "hover:bg-gray-700 border-gray-700" : "hover:bg-gray-200 border-gray-200"
+          darkMode
+            ? "hover:bg-gray-700 border-gray-700"
+            : "hover:bg-gray-200 border-gray-200"
         } transition-colors duration-300`}
         onClick={onToggle}
       >
@@ -65,9 +81,7 @@ const ProfileDropdown = ({
                 darkMode ? "bg-gray-800" : "bg-white"
               } rounded-full`}
             >
-              <MdVerified
-                className={`absolute h-4 w-4 text-income`}
-              />
+              <MdVerified className={`absolute h-4 w-4 text-income`} />
             </div>
           )}
         </div>
@@ -149,6 +163,7 @@ const ProfileDropdown = ({
                 ? "text-gray-400 hover:bg-gray-800"
                 : "text-gray-700 hover:bg-gray-50"
             } transition-colors cursor-pointer`}
+            onClick={handleProfileClick}
           >
             View Profile
           </button>

@@ -2,13 +2,12 @@ import React from "react";
 import Navbar from "./Navbar";
 import SideMenu from "./SideMenu";
 import { useTheme } from "../../context/ThemeContext";
+// import FloatingChatBot from "./AiChatBot/FloatingChatBot";
 
 const DashboardLayout = ({ children, activeMenu }) => {
   const { darkMode } = useTheme();
   return (
-    <div
-      className={`min-h-screen`}
-    >
+    <div className={`min-h-screen`}>
       <Navbar activeMenu={activeMenu} />
 
       <div className="flex">
@@ -27,6 +26,7 @@ const DashboardLayout = ({ children, activeMenu }) => {
         >
           <div className="mx-0 mob:mx-3 sm:mx-5">{children}</div>
         </div>{" "}
+        {/* <FloatingChatBot /> */}
       </div>
     </div>
   );

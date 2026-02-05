@@ -75,19 +75,23 @@ const Dashboard = () => {
           />
         </div>
 
-        <div className='mt-5'>
+        <div className="mt-5">
           <CumulativeIncomeExpenseChart
             transactions={[
               ...(dashboardData?.last30DaysIncomes?.transactions || []).map(
                 (t) => ({
                   ...t,
                   amount: t.amount, // positive
+                  type: "income",
+                  labelName: t.source, // ✅ NORMALIZED
                 })
               ),
               ...(dashboardData?.last30DaysExpenses?.transactions || []).map(
                 (t) => ({
                   ...t,
-                  amount: t.amount, // negative
+                  amount: -Math.abs(t.amount), // negative
+                  type: "expense",
+                  labelName: t.category, // ✅ NORMALIZED
                 })
               ),
             ]}

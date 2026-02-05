@@ -13,6 +13,7 @@ import Expense from "./pages/Dashboard/Expense.jsx";
 import { ThemeProvider } from "./context/ThemeContext.jsx";
 import { Toaster } from "react-hot-toast";
 import UserProvider from "./context/UserContext.jsx";
+import ProfileSettings from "./pages/ProfileSettings/ProfileSettings.jsx";
 
 function App() {
   return (
@@ -26,13 +27,15 @@ function App() {
             <Route path="/logout" element={<Logout />} />
 
             <Route path="/reset-password" element={<ResetPassword />} />
-<Route path="/verify-email" element={<VerifyEmail />} />
+            <Route path="/verify-email" element={<VerifyEmail />} />
             {/* ✅ GOOGLE OAUTH CALLBACK */}
             <Route path="/oauth-success" element={<OAuthSuccess />} />
 
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/income" element={<Income />} />
             <Route path="/expense" element={<Expense />} />
+
+            <Route path="/profile" element={<ProfileSettings />} />
           </Routes>
         </Router>
 

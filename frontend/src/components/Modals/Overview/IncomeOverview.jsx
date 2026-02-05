@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { prepareIncomeBarChartVisualization } from '../../../utils/helper';
 import { LuPlus } from 'react-icons/lu';
-import CustomBarChart from '../../Charts/CustomBarChart';
+import IncomeBarChart from '../../Charts/IncomeBarChart';
 import { useTheme } from '../../../context/ThemeContext';
 
 const IncomeOverview = ({transactions, onAddIncomeData}) => {
@@ -48,7 +48,7 @@ const IncomeOverview = ({transactions, onAddIncomeData}) => {
         </div>
 
         <button
-          className={`flex items-center gap-2 text-sm px-3 py-2 rounded-md transition
+          className={`ml-4 flex items-center gap-2 text-sm px-3 py-2 rounded-md transition
             ${
               darkMode
                 ? "bg-gray-800 text-gray-300 hover:bg-gray-700"
@@ -57,12 +57,13 @@ const IncomeOverview = ({transactions, onAddIncomeData}) => {
           `}
           onClick={onAddIncomeData}
         >
-          <LuPlus className="text-sm" /> Add <span className='hidden mob:inline'>Income</span>
+          <LuPlus className="text-sm" /> Add{" "}
+          <span className="hidden mob:inline">Income</span>
         </button>
       </div>
 
       <div className="mt-10">
-        <CustomBarChart data={chartData} type="income" xKey="month" />
+        <IncomeBarChart data={chartData} type="income" xKey="xKey" />
       </div>
     </div>
   );

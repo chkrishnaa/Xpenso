@@ -72,7 +72,7 @@ const Header = () => {
 
           {/* Actions */}
           <div className="flex items-center gap-3">
-            {!IsLoggedIn ? (
+            {IsLoggedIn ? (
               <Link
                 to="/dashboard"
                 className={`px-4 py-2 rounded-md mob:rounded-lg text-sm font-medium text-white transition shadow-sm ${

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { prepareExpenseLineChartVisualization } from "../../../utils/helper";
 import { LuPlus } from "react-icons/lu";
-import CustomLineChart from "../../Charts/CustomLineChart";
 import { useTheme } from "../../../context/ThemeContext";
+import ExpenseLineChart from "../../Charts/ExpenseLineChart";
 
 const ExpenseOverview = ({ transactions, onAddExpenseData }) => {
   const [chartData, setChartData] = useState([]);
@@ -44,7 +44,7 @@ const ExpenseOverview = ({ transactions, onAddExpenseData }) => {
 
         <button
           onClick={onAddExpenseData}
-          className={`flex items-center gap-2 text-sm px-3 py-2 rounded-md transition
+          className={`ml-4 flex items-center gap-2 text-sm px-3 py-2 rounded-md transition
             ${
               darkMode
                 ? "bg-gray-800 text-gray-300 hover:bg-gray-700"
@@ -58,7 +58,7 @@ const ExpenseOverview = ({ transactions, onAddExpenseData }) => {
       </div>
 
       <div className="mt-10">
-        <CustomLineChart data={chartData} type="expense" xKey="month" />
+        <ExpenseLineChart data={chartData} type="expense" xKey="xKey" />
       </div>
     </div>
   );

@@ -1,16 +1,18 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
 import SideMenu from "./SideMenu";
 import { NAVBAR_HEIGHT } from "../../utils/data";
 import { useTheme } from "../../context/ThemeContext";
 import ProfileDropdown from "./ProfileDropdown";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import { LuWalletMinimal } from "react-icons/lu";
 
 const Navbar = ({ activeMenu }) => {
   const [openSideMenu, setOpenSideMenu] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
+  const sideMenuRef = useRef(null);
+
 
   const { darkMode } = useTheme();
   const { user, clearUser } = useContext(UserContext);
@@ -33,6 +35,34 @@ const Navbar = ({ activeMenu }) => {
     mediaQuery.addEventListener("change", handleResize);
     return () => mediaQuery.removeEventListener("change", handleResize);
   }, []);
+
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (
+        openSideMenu &&
+        sideMenuRef.current &&
+        !sideMenuRef.current.contains(e.target)
+      ) {
+        setOpenSideMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, [openSideMenu]);
+
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === "Escape") {
+        setOpenSideMenu(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleEsc);
+    return () => document.removeEventListener("keydown", handleEsc);
+  }, []);
+
+
 
   return (
     <div
@@ -90,7 +120,7 @@ const Navbar = ({ activeMenu }) => {
             className="fixed left-0 z-40 lg:hidden"
             style={{ top: `${NAVBAR_HEIGHT}px` }}
           >
-            <SideMenu activeMenu={activeMenu} />
+            <SideMenu ref={sideMenuRef} activeMenu={activeMenu} />
           </div>
         )}
       </div>
@@ -116,7 +146,7 @@ const Navbar = ({ activeMenu }) => {
 
         <div></div>
 
-        <div className="flex items-center gap-4 pr-3 sm:pr-5">
+        <div className="flex items-center gap-1 mob:gap-4 pr-3 sm:pr-5">
           {isLoggedIn ? (
             <ProfileDropdown
               isOpen={openProfile}
@@ -131,8 +161,27 @@ const Navbar = ({ activeMenu }) => {
             />
           ) : (
             <>
-              <button onClick={() => navigate("/login")}>Login</button>
-              <button onClick={() => navigate("/signup")}>Sign Up</button>
+              <Link
+                to="/login"
+                className={`px-3 py-2 rounded-md mob:rounded-lg text-sm font-medium transition ${
+                  darkMode
+                    ? "text-gray-300 hover:bg-gray-800"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                }`}
+              >
+                Login
+              </Link>
+
+              <Link
+                to="/signup"
+                className={`px-4 py-2 rounded-md mob:rounded-lg text-sm font-medium text-white transition shadow-sm ${
+                  darkMode
+                    ? "bg-green-700 hover:bg-green-800"
+                    : "bg-green-600 hover:bg-green-700"
+                }`}
+              >
+                Sign Up
+              </Link>
             </>
           )}
         </div>

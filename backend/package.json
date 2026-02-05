@@ -12,6 +12,7 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@google/generative-ai": "latest",
     "axios": "^1.13.3",
     "bcryptjs": "^3.0.3",
     "cloudinary": "^1.41.3",
@@ -26,6 +27,7 @@
     "nodemailer": "^7.0.12",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
+    "readline-sync": "^1.4.10",
     "xlsx": "^0.18.5"
   }
 }

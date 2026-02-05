@@ -168,13 +168,24 @@ export const prepareIncomeBarChartVisualization = (data = []) => {
       new Date(a.createdAt) - new Date(b.createdAt)
   );
 
-
   return sortedData.map((item) => ({
-    month: moment(item.date).format("Do MMM"),
+    // 🔑 UNIQUE X-AXIS KEY (date + time)
+    xKey: `${item.source}__${item.createdAt}`,
+
+    // 👀 DISPLAY VALUE (date only)
+    displayDate: moment(item.date).format("Do MMM"),
+
     amount: Math.abs(Number(item.amount)),
-    source: item?.source,
+
+    // 📦 full payload for tooltip
+    source: item.source,
+    icon: item.icon,
+    date: item.date,
+    createdAt: item.createdAt,
+    description: item.description || "",
   }));
 };
+
 
 export const prepareExpenseLineChartVisualization = (data = []) => {
   if (!Array.isArray(data)) return [];
@@ -185,12 +196,22 @@ export const prepareExpenseLineChartVisualization = (data = []) => {
       new Date(a.createdAt) - new Date(b.createdAt)
   );
 
-
   return sortedData.map((item) => ({
-    month: moment(item.date).format("Do MMM"),
+    // 🔑 UNIQUE X-AXIS KEY
+    xKey: `${item.category}__${item.createdAt}`,
+
+    // 👀 WHAT USER SEES ON X-AXIS
+    displayDate: moment(item.date).format("Do MMM"),
+
     amount: Math.abs(Number(item.amount)),
-    category: item?.category,
+
+    // 📦 FULL PAYLOAD FOR TOOLTIP
+    category: item.category,
+    date: item.date,
+    createdAt: item.createdAt,
+    description: item.description || "",
   }));
 };
+
 
 

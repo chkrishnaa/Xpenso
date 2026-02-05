@@ -1,49 +1,49 @@
-import React, { useContext } from "react";
+import React, { forwardRef, useContext } from "react";
 import { SIDE_MENU_DATA, NAVBAR_HEIGHT } from "../../utils/data";
 import { UserContext } from "../../context/UserContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import CharAvatar from "../Cards/CharAvatar";
 import { MdVerified } from "react-icons/md";
 import { useTheme } from "../../context/ThemeContext";
+import { LuLogOut } from "react-icons/lu";
 
-const SideMenu = ({ activeMenu }) => {
+const SideMenu = forwardRef(({ activeMenu }, ref) => {
   const { user, clearUser } = useContext(UserContext);
   const { darkMode } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
+
   const currentPath = location.pathname;
 
   const handleClick = (route) => {
     if (route === "Logout") {
-      handleLogout();
+      localStorage.clear();
+      clearUser();
+      navigate("/login");
       return;
     }
     navigate(route);
   };
 
-  const handleLogout = () => {
-    localStorage.clear();
-    clearUser();
-    navigate("/login");
-  };
-
   return (
     <aside
-      className={`w-64 border-r p-5 sticky z-20 ${
-        darkMode
-          ? "bg-gray-900 border-gray-700"
-          : "bg-gray-100 border-gray-300/50"
-      }`}
+      ref={ref}
+      className={`w-56 mob:w-64 border-r p-5 z-40 sticky flex flex-col
+    ${
+      darkMode
+        ? "bg-gray-900 border-gray-700"
+        : "bg-gray-100 border-gray-300/50"
+    }
+  `}
       style={{
         top: `${NAVBAR_HEIGHT}px`,
         height: `calc(100vh - ${NAVBAR_HEIGHT}px)`,
       }}
     >
       {/* USER SECTION */}
-      <div className="relative flex flex-col items-center justify-center gap-2 mt-3 mb-6 min-h-[140px]">
+      <div className="flex flex-col items-center gap-2 mt-3 mb-6 min-h-[140px]">
         {user ? (
           <>
-            {/* Avatar wrapper */}
             <div className="relative">
               {user.profileImageUrl ? (
                 <img
@@ -60,36 +60,21 @@ const SideMenu = ({ activeMenu }) => {
                 />
               )}
 
-              {/* Verified badge */}
               {user.isAccountVerified && (
                 <MdVerified
                   size={20}
-                  className="absolute bottom-0 right-0 rounded-full text-income bg-transparent"
+                  className="absolute bottom-0 right-0 text-income"
                 />
               )}
             </div>
 
             <h5
-              className={`font-medium leading-6 ${
+              className={`font-medium ${
                 darkMode ? "text-gray-200" : "text-gray-950"
               }`}
             >
               {user.fullName}
             </h5>
-
-            {/* Verify Email Button */}
-            {!user.isAccountVerified && (
-              <button
-                onClick={() => navigate("/verify-email")}
-                className={`text-xs px-3 py-1 rounded-full transition ${
-                  darkMode
-                    ? "bg-yellow-900/40 text-yellow-300 hover:bg-yellow-900/60"
-                    : "bg-yellow-100 text-yellow-700 hover:bg-yellow-200"
-                }`}
-              >
-                Verify your email
-              </button>
-            )}
           </>
         ) : (
           <>
@@ -108,37 +93,67 @@ const SideMenu = ({ activeMenu }) => {
       </div>
 
       {/* MENU ITEMS */}
+      <div className="flex flex-col flex-1 overflow-y-auto">
+        {/* MENU */}
+        <div className="flex flex-col flex-1">
+          {SIDE_MENU_DATA.map((item, index) => {
+            const isActive = currentPath === item.path;
+            const isHome = item.label === "Home";
 
-      <div className="flex flex-col">
-        {SIDE_MENU_DATA.map((item, index) => {
-          const isActive = currentPath === item.path;
-          const isHome = item.label === "Home";
+            return (
+              <button
+                key={index}
+                onClick={() => handleClick(item.path)}
+                className={`w-full flex items-center gap-4 py-2 px-4 rounded-lg mob:rounded-xl mb-2 transition-all duration-300
+            ${
+              isHome
+                ? `bg-gradient-to-r from-green-500 via-blue-600 to-indigo-600
+     text-white font-medium
+     shadow-lg shadow-blue-500/30
+     hover:shadow-blue-500/50
+     hover:from-green-600 hover:to-indigo-700
+     hover:scale-[1.02]
+     transition-all duration-300 group`
+                : isActive
+                ? `bg-gradient-to-r from-balance via-blue-600 to-indigo-600
+     text-white font-medium
+     shadow-md shadow-blue-500/30
+     hover:shadow-blue-500/40
+     hover:scale-[1.01]
+     transition-all duration-300`
+                : darkMode
+                ? "text-gray-300 hover:bg-gray-800"
+                : "text-gray-700 hover:bg-gray-200"
+            }
+          `}
+              >
+                <item.icon className="text-xl" />
+                {item.label}
+              </button>
+            );
+          })}
+        </div>
 
-          return (
-            <button
-              key={`menu_${index}`}
-              className={`w-full flex items-center gap-4 text-[15px] py-3 px-6 rounded-lg mb-2 transition
-          ${
-            isHome
-              ? "lg:hidden bg-gradient-to-r from-green-500 to-blue-500 text-white hover:bg-gradient-to-r hover:from-green-600 hover:to-blue-600"
-              : isActive
-              ? "bg-balance text-white"
-              : darkMode
-              ? "text-gray-300 hover:bg-gray-800"
-              : "text-gray-700 hover:bg-gray-200"
-          }
-        `}
-              onClick={() => handleClick(item.path)}
-              aria-current={isActive ? "page" : undefined}
-            >
-              <item.icon className="text-xl" />
-              <span>{item.label}</span>
-            </button>
-          );
-        })}
+        {/* LOGOUT – STICKS TO BOTTOM */}
+        <div className="mt-auto px-2 pb-4">
+          <button
+            onClick={() => handleClick("/logout")}
+            className={`w-full flex items-center gap-4 py-3 px-4 rounded-lg mob:rounded-xl font-medium
+        transition-all duration-300 group
+        ${
+          darkMode
+            ? "bg-gradient-to-r from-red-600/70 to-pink-600/70 text-white hover:from-red-600 hover:to-pink-600 shadow-lg shadow-red-500/20"
+            : "bg-gradient-to-r from-red-100 to-pink-100 text-red-600 hover:from-red-200 hover:to-pink-200 shadow-md"
+        }
+      `}
+          >
+            <LuLogOut className="text-xl transition-transform duration-300 group-hover:rotate-12" />
+            Logout
+          </button>
+        </div>
       </div>
     </aside>
   );
-};
+});
 
 export default SideMenu;
