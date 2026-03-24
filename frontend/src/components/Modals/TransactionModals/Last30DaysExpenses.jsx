@@ -3,7 +3,7 @@ import { prepareExpenseBarChartData } from "../../../utils/helper";
 import CustomBarChart from "../../Charts/CustomBarChart";
 import { useTheme } from "../../../context/ThemeContext";
 
-const Last30DaysExpenses = ({ data }) => {
+const Last30DaysExpenses = ({ data, title = "Last 30 Days Expenses" }) => {
   const [charData, setCharData] = useState([]);
   const { darkMode } = useTheme(); // ✅ REQUIRED
 
@@ -14,7 +14,7 @@ const Last30DaysExpenses = ({ data }) => {
 
   return (
     <div
-      className={`px-2 py-6 mob:px-6 rounded-none mob:rounded-xl sm:rounded-2xl border-t mob:border transition-colors duration-300 bg-gradient-to-b shadow-none mob:shadow-lg
+      className={`px-2 py-6 mob:px-6 rounded-none mob:rounded-xl sm:rounded-2xl border-t mob:border transition-colors duration-300 bg-linear-to-b shadow-none mob:shadow-lg
         ${
           darkMode
             ? "from-gray-950 via-gray-950 to-gray-900 border-gray-600 shadow-gray-500/30"
@@ -28,7 +28,7 @@ const Last30DaysExpenses = ({ data }) => {
             darkMode ? "text-gray-100" : "text-gray-900"
           }`}
         >
-          Last 30 Days Expenses
+          {title}
         </h5>
       </div>
 

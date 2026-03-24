@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "./Navbar";
 import SideMenu from "./SideMenu";
 import { useTheme } from "../../context/ThemeContext";
-// import FloatingChatBot from "./AiChatBot/FloatingChatBot";
+import FloatingChatBot from "./AiChatBot/FloatingChatBot";
 
 const DashboardLayout = ({ children, activeMenu }) => {
   const { darkMode } = useTheme();
@@ -26,7 +26,7 @@ const DashboardLayout = ({ children, activeMenu }) => {
         >
           <div className="mx-0 mob:mx-3 sm:mx-5">{children}</div>
         </div>{" "}
-        {/* <FloatingChatBot /> */}
+        <FloatingChatBot />
       </div>
     </div>
   );

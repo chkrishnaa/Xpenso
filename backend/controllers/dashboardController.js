@@ -7,71 +7,104 @@ exports.getDashboardData = async (req, res) => {
     try {
         const userId = req.user.id;
         const userObjectId = new Types.ObjectId(String(userId));
+        const last30DaysDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+        const MIN_TRANSACTIONS_FOR_WINDOW = 15;
 
-        const totalIncome = await Income.aggregate([
-            { $match: { userId: userObjectId } },
-            { $group: { _id: null, total: { $sum: "$amount" } } },
-        ]);
+        const [totalIncomeAgg, totalExpenseAgg, incomesAll, expensesAll, incomesLast30, expensesLast30] =
+          await Promise.all([
+            Income.aggregate([
+              { $match: { userId: userObjectId } },
+              { $group: { _id: null, total: { $sum: "$amount" } } },
+            ]),
+            Expense.aggregate([
+              { $match: { userId: userObjectId } },
+              { $group: { _id: null, total: { $sum: "$amount" } } },
+            ]),
+            Income.find({ userId }).sort({ date: -1, createdAt: -1 }),
+            Expense.find({ userId }).sort({ date: -1, createdAt: -1 }),
+            Income.find({ userId, createdAt: { $gte: last30DaysDate } }).sort({
+              date: -1,
+              createdAt: -1,
+            }),
+            Expense.find({ userId, createdAt: { $gte: last30DaysDate } }).sort({
+              date: -1,
+              createdAt: -1,
+            }),
+          ]);
 
-        const totalExpense = await Expense.aggregate([
-            { $match: { userId: userObjectId } },
-            { $group: { _id: null, total: { $sum: "$amount" } } },
-        ]);
+        const mapIncome = (doc) => ({ ...doc.toObject(), type: "income" });
+        const mapExpense = (doc) => ({ ...doc.toObject(), type: "expense" });
+        const sortByNewest = (a, b) =>
+          new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date);
 
-        const last30DaysImcomeTransactions = await Income.find({
-            userId,
-            date: { $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) },
-        }).sort({ date: -1 });
+        const combinedLast30 = [
+          ...incomesLast30.map(mapIncome),
+          ...expensesLast30.map(mapExpense),
+        ].sort(sortByNewest);
 
-        const incomesLast30Days = last30DaysImcomeTransactions.reduce(
-            (total, transaction) => total + transaction.amount,
-            0
+        const combinedAll = [...incomesAll.map(mapIncome), ...expensesAll.map(mapExpense)].sort(
+          sortByNewest
         );
 
-        const last30DaysExpenseTransactions = await Expense.find({
-            userId,
-            date: { $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) },
-        }).sort({ date: -1 });
+        const useLast30Mode = combinedLast30.length >= MIN_TRANSACTIONS_FOR_WINDOW;
+        const activeMode = useLast30Mode ? "last30days" : "last15transactions";
+        const effectiveCombined = useLast30Mode
+          ? combinedLast30
+          : combinedAll.slice(0, MIN_TRANSACTIONS_FOR_WINDOW);
 
-        const expensesLast30Days = last30DaysExpenseTransactions.reduce(
-            (total, transaction) => total + transaction.amount,
-            0
+        const effectiveIncomeTransactions = effectiveCombined.filter(
+          (t) => t.type === "income"
+        );
+        const effectiveExpenseTransactions = effectiveCombined.filter(
+          (t) => t.type === "expense"
         );
 
-        const incomes = await Income.find({ userId })
-          .sort({ createdAt: -1 });
+        const incomeWindowTotal = effectiveIncomeTransactions.reduce(
+          (total, transaction) => total + Math.abs(Number(transaction.amount || 0)),
+          0
+        );
 
-        const expenses = await Expense.find({ userId })
-          .sort({ createdAt: -1 });
+        const expenseWindowTotal = effectiveExpenseTransactions.reduce(
+          (total, transaction) => total + Math.abs(Number(transaction.amount || 0)),
+          0
+        );
 
-        const lastTransactions = [
-          ...incomes.map((t) => ({ ...t.toObject(), type: "income" })),
-          ...expenses.map((t) => ({ ...t.toObject(), type: "expense" })),
-        ]
-          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-          .slice(0, 5);
+        const lastTransactions = combinedAll.slice(0, 5);
 
+        const income = Math.abs(Number(totalIncomeAgg[0]?.total || 0));
+        const expense = Math.abs(Number(totalExpenseAgg[0]?.total || 0));
 
-
-        const income = totalIncome[0]?.total || 0; // +ve
-        const expense = totalExpense[0]?.total || 0; // -ve
-
-        
+        const incomeDateList = effectiveIncomeTransactions.map((t) => new Date(t.date));
+        const expenseDateList = effectiveExpenseTransactions.map((t) => new Date(t.date));
+        const incomeDateRange = incomeDateList.length
+          ? {
+              from: new Date(Math.min(...incomeDateList)).toISOString(),
+              to: new Date(Math.max(...incomeDateList)).toISOString(),
+            }
+          : { from: null, to: null };
+        const expenseDateRange = expenseDateList.length
+          ? {
+              from: new Date(Math.min(...expenseDateList)).toISOString(),
+              to: new Date(Math.max(...expenseDateList)).toISOString(),
+            }
+          : { from: null, to: null };
 
         res.status(200).json({
           success: true,
-
           totalIncome: income,
           totalExpense: expense,
-          totalBalance: income + expense, // ✅ CORRECT
-
+          totalBalance: income - expense,
           last30DaysExpenses: {
-            total: expensesLast30Days,
-            transactions: last30DaysExpenseTransactions,
+            total: expenseWindowTotal,
+            transactions: effectiveExpenseTransactions,
+            mode: activeMode,
+            dateRange: expenseDateRange,
           },
           last30DaysIncomes: {
-            total: incomesLast30Days,
-            transactions: last30DaysImcomeTransactions,
+            total: incomeWindowTotal,
+            transactions: effectiveIncomeTransactions,
+            mode: activeMode,
+            dateRange: incomeDateRange,
           },
           recentTransactions: lastTransactions,
         });

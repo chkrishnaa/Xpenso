@@ -9,6 +9,12 @@ const Logout = () => {
 
   useEffect(() => {
     // 1️⃣ Clear auth data
+    const allKeys = Object.keys(localStorage);
+    allKeys.forEach((key) => {
+      if (key.startsWith("xpenso_ai_messages_")) {
+        localStorage.removeItem(key);
+      }
+    });
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     clearUser();

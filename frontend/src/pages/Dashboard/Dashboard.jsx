@@ -24,6 +24,22 @@ const Dashboard = () => {
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const incomeMode = dashboardData?.last30DaysIncomes?.mode || "last30days";
+  const expenseMode = dashboardData?.last30DaysExpenses?.mode || "last30days";
+  const isFallbackMode =
+    incomeMode === "last15transactions" || expenseMode === "last15transactions";
+  const chartTitle = isFallbackMode
+    ? "Income vs Expense (Latest 15 Transactions)"
+    : "Income vs Expense (Last 30 Days)";
+  const incomeTitle =
+    incomeMode === "last15transactions"
+      ? "Latest 15 Income Transactions"
+      : "Last 30 Days Incomes";
+  const expenseTitle =
+    expenseMode === "last15transactions"
+      ? "Latest 15 Expense Transactions"
+      : "Last 30 Days Expenses";
+
   const fetchDataboardData = async () =>{
     if(loading) return;
 
@@ -77,6 +93,7 @@ const Dashboard = () => {
 
         <div className="mt-5">
           <CumulativeIncomeExpenseChart
+            title={chartTitle}
             transactions={[
               ...(dashboardData?.last30DaysIncomes?.transactions || []).map(
                 (t) => ({
@@ -111,6 +128,7 @@ const Dashboard = () => {
           />
 
           <Last30DaysExpenses
+            title={expenseTitle}
             data={dashboardData?.last30DaysExpenses?.transactions || []}
           />
 
@@ -125,6 +143,7 @@ const Dashboard = () => {
           />
 
           <Last30DaysIncomes
+            title={incomeTitle}
             data={dashboardData?.last30DaysIncomes?.transactions || []}
           />
         </div>

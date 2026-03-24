@@ -144,7 +144,7 @@ const TooltipIndividual = ({ active, payload, darkMode }) => {
     <div
       className={`
         min-w-[200px] mob:min-w-[250px] rounded-md sm:rounded-lg mob:rounded-xl border ${borderColor}
-        bg-gradient-to-b shadow-none mob:shadow-lg
+        bg-linear-to-b shadow-none mob:shadow-lg
         p-3 mob:p-4
         transition-all duration-200
         ${
@@ -241,7 +241,7 @@ const TooltipAggregate = ({ active, payload, darkMode, showDate = true }) => {
     <div
       className={`
         min-w-[180px] mob:min-w-[250px] rounded-md sm:rounded-lg mob:rounded-xl border
-        bg-gradient-to-b shadow-none mob:shadow-lg
+        bg-linear-to-b shadow-none mob:shadow-lg
         p-3 mob:p-4
         transition-all duration-200
         ${
@@ -359,7 +359,7 @@ const TooltipAggregate = ({ active, payload, darkMode, showDate = true }) => {
 
 /* ================= COMPONENT ================= */
 
-const CumulativeIncomeExpenseChart = ({ transactions }) => {
+const CumulativeIncomeExpenseChart = ({ transactions, title = "Income vs Expense (Last 30 Days)" }) => {
   const windowWidth = useWindowWidth() || window.innerWidth;
   const chartHeight = windowWidth > 400 ? 400 : 300;
   const chartYAxisWidth = windowWidth > 400 ? 70 : 55;
@@ -390,9 +390,9 @@ const CumulativeIncomeExpenseChart = ({ transactions }) => {
   const IndividualBarCount = individualData.length;
   const AggregatedDataBlockCount = aggregatedDataBlocks.length;
 
-  const IndividualBarRadius = IndividualBarCount > 10 ? 0 : [6, 6, 6, 6];
+  const IndividualBarRadius = IndividualBarCount > 15 ? 0 : [6, 6, 6, 6];
   const AggregatedDataBlockRadius =
-    AggregatedDataBlockCount > 10 ? 0 : [6, 6, 0, 0];
+    AggregatedDataBlockCount > 15 ? 0 : [6, 6, 0, 0];
 
   const axisColor = darkMode ? "#9CA3AF" : "#4B5563";
   const gridColor = darkMode ? "#374151" : "#E5E7EB";
@@ -403,7 +403,7 @@ const CumulativeIncomeExpenseChart = ({ transactions }) => {
 
   return (
     <div
-      className={`px-2 py-6 mob:px-6 rounded-none mob:rounded-xl sm:rounded-2xl border-t mob:border transition-colors duration-300 bg-gradient-to-b
+      className={`px-2 py-6 mob:px-6 rounded-none mob:rounded-xl sm:rounded-2xl border-t mob:border transition-colors duration-300 bg-linear-to-b
         ${
           darkMode
             ? "from-gray-950 via-gray-950 to-gray-900 border-gray-600 shadow-lg shadow-gray-500/30"
@@ -418,7 +418,7 @@ const CumulativeIncomeExpenseChart = ({ transactions }) => {
             darkMode ? "text-gray-100" : "text-gray-900"
           }`}
         >
-          Income vs Expense (Last 30 Days)
+          {title}
         </h5>
 
         <div className="flex w-full sm:w-auto justify-end">
