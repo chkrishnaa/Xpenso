@@ -14,7 +14,9 @@ const ContentArea = () => {
       />
 
       <div className="absolute h-15 flex justify-between items-center top-3 right-10">
-        <p className='text-3xl font-bold'>Xpenso</p>
+        <p className={`text-3xl font-bold ${darkMode ? "text-white" : "text-gray-900"}`}>
+          Xpenso
+        </p>
       </div>
     </div>
   );
