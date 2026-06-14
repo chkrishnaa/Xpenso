@@ -1,97 +1,159 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import { useTheme } from "../../context/ThemeContext";
-
-const Toggle = ({ enabled }) => (
-  <div
-    className={`w-10 h-5 rounded-full transition ${
-      enabled ? "bg-blue-600" : "bg-gray-400"
-    }`}
-  />
-);
+import axiosInstance from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
+// import NotificationToggle from "./NotificationToggle";
+// import ThemeToggle from "./ThemeToggle";
 
 const SettingsPage = () => {
-  const { user } = useContext(UserContext);
-  const { darkMode } = useTheme();
+  const { user, updateUser } = useContext(UserContext);
+  const { darkMode, toggleDarkMode } = useTheme();
+  const [saving, setSaving] = useState(false);
+  const [preferences, setPreferences] = useState({
+    monthlySummaryEnabled: false,
+    largeTransactionAlertsEnabled: false,
+  });
+
+  useEffect(() => {
+    if (!user) return;
+    setPreferences({
+      monthlySummaryEnabled: !!user.monthlySummaryEnabled,
+      largeTransactionAlertsEnabled: !!user.largeTransactionAlertsEnabled,
+    });
+  }, [user]);
 
   if (!user) return null;
+
+  const handleSavePreferences = async (updates) => {
+    setSaving(true);
+    try {
+      const response = await axiosInstance.put(
+        API_PATHS.USER.UPDATE_PREFERENCES,
+        updates
+      );
+      if (response.data?.success) {
+        updateUser(response.data.user);
+      }
+    } catch (error) {
+      console.error("Save preferences error:", error);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const togglePreference = async (key) => {
+    const updatedPrefs = {
+      ...preferences,
+      [key]: !preferences[key],
+    };
+
+    setPreferences(updatedPrefs);
+    await handleSavePreferences({ [key]: updatedPrefs[key] });
+  };
+
+  const handleThemeToggle = async () => {
+    const nextTheme = darkMode ? "light" : "dark";
+    toggleDarkMode();
+    await handleSavePreferences({ themePreference: nextTheme });
+  };
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-10">
       <div
-        className={`rounded-xl border p-6 ${
+        className={`rounded-[2rem] border p-8 shadow-[0_24px_80px_-40px_rgba(15,23,42,0.35)] ${
           darkMode
-            ? "bg-gray-900 border-gray-700 text-gray-200"
-            : "bg-white border-gray-200 text-gray-800"
+            ? "bg-slate-950 border-slate-800 text-slate-100"
+            : "bg-white border-slate-200 text-slate-900"
         }`}
       >
-        <h2 className="text-xl font-semibold mb-6">Settings</h2>
+        <h2 className="text-2xl font-bold mb-8">Settings</h2>
 
-        {/* ACCOUNT */}
-        <section className="mb-6">
-          <h3 className="font-semibold mb-2">Account</h3>
-          <p className="text-sm text-gray-400">
-            Email: <b>{user.email}</b>
-          </p>
-          <p className="text-sm text-gray-400">
-            Email verified: <b>{user.isAccountVerified ? "Yes" : "No"}</b>
-          </p>
-          <p className="text-sm text-gray-400">
-            Auth provider: <b>{user.authProvider}</b>
-          </p>
+        <section className="mb-8">
+          <h3 className="text-lg font-semibold mb-4">Notifications</h3>
+          <div className="space-y-4">
+            <NotificationToggle
+              label="Monthly summary"
+              enabled={preferences.monthlySummaryEnabled}
+              onChange={() => togglePreference("monthlySummaryEnabled")}
+            />
+            <NotificationToggle
+              label="Large transaction alerts"
+              enabled={preferences.largeTransactionAlertsEnabled}
+              onChange={() => togglePreference("largeTransactionAlertsEnabled")}
+            />
+            <NotificationToggle
+              label="Product updates"
+              enabled={false}
+              onChange={() => {}}
+            />
+          </div>
         </section>
 
-        {/* SECURITY */}
-        <section className="mb-6">
-          <h3 className="font-semibold mb-2">Security & Login</h3>
-          {user.authProvider === "google" ? (
-            <p className="text-sm text-gray-400">
-              Password is managed by Google.
-            </p>
-          ) : (
-            <button className="text-sm px-3 py-1 rounded-lg bg-blue-600 text-white">
-              Change Password
-            </button>
-          )}
-        </section>
+        <section className="mb-8">
+          <h3 className="text-lg font-semibold mb-4">Appearance</h3>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-700 dark:bg-slate-900">
+              <div className="text-sm text-slate-500 dark:text-slate-400">
+                Theme mode
+              </div>
+              <div className="mt-3 flex items-center justify-between gap-4">
+                <div>
+                  <p className="text-base font-semibold">
+                    {darkMode ? "Dark" : "Light"}
+                  </p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">
+                    Use the look that feels best.
+                  </p>
+                </div>
+                <ThemeToggle
+                  darkMode={darkMode}
+                  onToggle={handleThemeToggle}
+                />
+              </div>
+            </div>
 
-        {/* NOTIFICATIONS */}
-        <section className="mb-6">
-          <h3 className="font-semibold mb-3">Notifications</h3>
-          <div className="space-y-2 text-sm">
-            <div className="flex justify-between items-center">
-              Monthly summary <Toggle enabled />
-            </div>
-            <div className="flex justify-between items-center">
-              Large transaction alerts <Toggle enabled />
-            </div>
-            <div className="flex justify-between items-center">
-              Product updates <Toggle enabled={false} />
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-700 dark:bg-slate-900">
+              <div className="text-sm text-slate-500 dark:text-slate-400">
+                Currency
+              </div>
+              <div className="mt-3 text-base font-semibold">INR (₹)</div>
             </div>
           </div>
         </section>
 
-        {/* APPEARANCE */}
-        <section className="mb-6">
-          <h3 className="font-semibold mb-2">Appearance</h3>
-          <p className="text-sm text-gray-400">
-            Theme: <b>{darkMode ? "Dark" : "Light"}</b>
-          </p>
-          <p className="text-sm text-gray-400">
-            Currency: <b>INR (₹)</b>
-          </p>
+        <section>
+          <h3 className="text-lg font-semibold mb-4">Account</h3>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-700 dark:bg-slate-900">
+              <p className="text-sm text-slate-500 dark:text-slate-400">
+                Email
+              </p>
+              <p className="mt-2 font-semibold">{user.email}</p>
+            </div>
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-700 dark:bg-slate-900">
+              <p className="text-sm text-slate-500 dark:text-slate-400">
+                Verification
+              </p>
+              <p className="mt-2 font-semibold">
+                {user.isAccountVerified ? "Verified" : "Not verified"}
+              </p>
+            </div>
+          </div>
         </section>
 
-        {/* LANGUAGE */}
-        <section>
-          <h3 className="font-semibold mb-2">Language & Region</h3>
-          <p className="text-sm text-gray-400">
-            Language: <b>English</b>
-          </p>
-          <p className="text-sm text-gray-400">
-            Timezone: <b>Asia/Kolkata</b>
-          </p>
-        </section>
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="text-sm text-slate-500 dark:text-slate-400">
+            Theme preferences and notification settings are saved automatically.
+          </div>
+          <button
+            type="button"
+            disabled={saving}
+            className="inline-flex items-center justify-center rounded-3xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-400"
+          >
+            {saving ? "Saving..." : "Save preferences"}
+          </button>
+        </div>
       </div>
     </div>
   );

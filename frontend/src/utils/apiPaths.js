@@ -32,6 +32,9 @@ export const API_PATHS = {
     EXPORT_EXPENSE: "/api/v1/expense/export-expense-details",
   },
 
+  USER: {
+    UPDATE_PREFERENCES: "/api/v1/user/preferences",
+  },
   IMAGE: {
     UPLOAD_AVATAR: "/api/v1/auth/upload-avatar",
   },
