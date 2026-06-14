@@ -207,27 +207,38 @@ const Dashboard = () => {
                 className="w-10 h-10 rounded-md"
               />
               <div>
-                <div className="text-lg font-semibold">{`Dashboard — ${monthLabel}`}</div>
-                <p className="text-xs text-gray-500">
+                <div
+                  className={`text-lg font-semibold ${darkMode ? "text-white" : "text-gray-800"}`}
+                >{`Dashboard — ${monthLabel}`}</div>
+                <p
+                  className={`text-xs ${darkMode ? "text-gray-400" : "text-gray-500"}`}
+                >
                   Overview of transactions for the selected month.
                 </p>
               </div>
             </div>
 
             <div
-              className={`flex items-center gap-3 px-4 py-2 rounded-xl border shadow-sm ${darkMode ? "bg-zinc-900 border-zinc-700" : "bg-white border-gray-200"}`}
+              className={`relative flex items-center gap-3 px-4 py-2 rounded-xl border shadow-sm bg-gradient-to-b ${
+                darkMode
+                  ? "from-gray-950 via-gray-950 to-gray-900 border-gray-700 text-white"
+                  : "from-blue-50 via-blue-50 to-blue-100 border-blue-300 text-gray-900"
+              }`}
             >
-              <FiCalendar
-                className={`${darkMode ? "text-gray-400" : "text-gray-500"}`}
-              />
-
               <input
                 type="month"
                 value={selectedMonth}
                 min={minMonth || undefined}
                 max={maxMonth}
                 onChange={(e) => setSelectedMonth(e.target.value)}
-                className={`bg-transparent outline-none text-sm font-medium cursor-pointer ${darkMode ? "text-white" : "text-gray-900"}`}
+                className={`bg-transparent outline-none text-sm font-medium cursor-pointer ${
+                  darkMode ? "text-white" : "text-gray-900"
+                }`}
+              />
+
+              <FiCalendar
+                size={18}
+                className={darkMode ? "text-blue-400" : "text-blue-600"}
               />
             </div>
           </div>
@@ -322,6 +333,21 @@ const Dashboard = () => {
           />
         </div>
       </div>
+
+      <style>{`
+      input[type="month"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+input[type="month"]::-webkit-inner-spin-button,
+input[type="month"]::-webkit-clear-button {
+  display: none;
+}
+      `}</style>
     </DashboardLayout>
   );
 };
