@@ -239,10 +239,10 @@ const Dashboard = () => {
               </div> */}
 
               <div
-                className={`flex flex-col items-center justify-center gap-3 h-[180px] rounded-2xl border shadow-sm transition-all ${
+                className={`flex flex-col items-center justify-center gap-3 h-[180px] rounded-2xl border shadow-sm transition-all bg-gradient-to-b ${
                   darkMode
-                    ? "bg-zinc-900 border-zinc-700 text-white"
-                    : "bg-white border-gray-200 text-gray-900"
+                    ? "from-gray-950 via-gray-950 to-gray-900 border-gray-700 text-white"
+                    : "from-blue-50 via-blue-50 to-blue-100 border-blue-300 text-gray-900"
                 }`}
               >
                 <div
