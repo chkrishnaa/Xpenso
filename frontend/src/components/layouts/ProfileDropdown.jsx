@@ -156,7 +156,7 @@ const ProfileDropdown = ({ isOpen, onToggle, avatar, email, onLogout }) => {
               )}
             </div>
           </div>
-
+{/* 
           <button
             className={`w-full text-left block px-4 py-2 text-sm ${
               darkMode
@@ -166,7 +166,7 @@ const ProfileDropdown = ({ isOpen, onToggle, avatar, email, onLogout }) => {
             onClick={handleProfileClick}
           >
             View Profile
-          </button>
+          </button> */}
           <div
             className={`border-t ${
               darkMode ? "border-gray-700" : "border-gray-100"
